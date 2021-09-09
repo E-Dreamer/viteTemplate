@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 17:18:21
- * @LastEditTime: 2021-09-09 15:35:15
+ * @LastEditTime: 2021-09-09 17:29:10
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -26,10 +26,13 @@ export default function () {
   }
   const currentRoute = useRoute()
   const watchRouter = watch(() => currentRoute.name, () => {
+    // 在mobile下 点击路由会关闭侧边栏
     if (device.value === 'mobile' && sidebar.value.opened) {
       store.dispatch("app/closeSideBar");
       store.dispatch('app/toggleAnimation', { withoutAnimation: true })
     }
+
+    
   })
   const resizeMounted = () => {
     if (isMobile()) {
