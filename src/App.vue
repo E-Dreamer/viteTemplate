@@ -3,20 +3,14 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 export default {
   name: 'App',
   setup () {
+    const i18n = useI18n()
     var jsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
     sessionStorage.setItem('locale', jsSrc);
-
-    const locale = computed(() => {
-      return sessionStorage.getItem('locale') 
-    })
-    return {
-      locale
-    }
+    i18n.locale.value = jsSrc;
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-07 16:14:50
- * @LastEditTime: 2021-09-09 16:02:11
+ * @LastEditTime: 2021-09-10 11:05:07
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -15,8 +15,14 @@
     <Breadcrumb></Breadcrumb>
 
     <div class="right_menu">
-      <!-- <Screenfull></Screenfull> -->
-      <el-dropdown trigger="click"
+      <Screenfull class="right_menu_item hover_effect"></Screenfull>
+      <template class="right_menu_item hover_effect">
+        <SelectSize ></SelectSize>
+      </template>
+      <template class="right_menu_item hover_effect">
+        <SelectLang></SelectLang>
+      </template>
+      <el-dropdown trigger="click" :size='size'
                    class="avatar_container right_menu_item hover_effect">
         <div class="avatar_wrapper">
           <img :src="avatar + '?imageView2/1/w/80/h/80'"
@@ -28,12 +34,9 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <router-link to="/profile/index">
-              <el-dropdown-item>Profile</el-dropdown-item>
-            </router-link>
-            <router-link to="/">
-              <el-dropdown-item>Dashboard</el-dropdown-item>
-            </router-link>
+            <el-dropdown-item @click="lockFull">
+              <span style='display:block'>{{$t('lock')}}</span>
+            </el-dropdown-item>
             <el-dropdown-item divided
                               @click="logout">
               <span style="display: block">{{$t('logout')}}</span>
@@ -48,14 +51,18 @@
 <script>
 import Hamburger from '@/components/Hamburger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
-// import Screenfull from "@/components/Screenfull";
+import Screenfull from "@/components/Screenfull/index.vue";
+import SelectSize from '@/components/SelectSize/index.vue'
+import SelectLang from '@/components/SelectLang/index.vue'
 import { useStore } from 'vuex'
 import { computed, reactive, toRefs } from 'vue';
+import sizefn from '@/components/size'
 // import { CaretBottom } from '@element-plus/icons'
 export default {
   name: 'Navbar',
-  components: { Hamburger, Breadcrumb },
+  components: { Hamburger, Breadcrumb ,Screenfull,SelectSize,SelectLang},
   setup () {
+    const {size} = sizefn()
     const store = useStore();
     const state = reactive({
       sidebar: computed(() => {
@@ -69,11 +76,15 @@ export default {
       }),
       logout:()=>{
         console.log('退出登录')
+      },
+      lockFull:()=>{
+        console.log('锁屏')
       }
     })
 
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      size
     }
   },
 }

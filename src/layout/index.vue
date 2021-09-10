@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-07 16:05:41
- * @LastEditTime: 2021-09-09 15:33:57
+ * @LastEditTime: 2021-09-10 15:25:04
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -17,6 +17,7 @@
          class="main-container">
       <div :class="{'fixed-header' : fixedHeader}">
         <NavBar></NavBar>
+        <tagsView v-if='hasTagsView'></tagsView>
       </div>
       <app-main></app-main>
     </div>
@@ -24,21 +25,22 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, onBeforeUnmount, onMounted } from "vue"
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, toRefs, watch } from "vue"
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { SideBar, NavBar, AppMain } from './components/index'
+import { SideBar, NavBar, AppMain, tagsView } from './components/index'
 import resize from './resize'
 export default {
-  components: { SideBar, NavBar, AppMain },
+  components: { SideBar, NavBar, AppMain, tagsView },
   name: 'Layout',
   setup () {
     const { sidebar,
       device,
       resizeMounted,
       addEventListenerOnResize,
-      removeEventListenerResize,
-      watchRouter } = resize();
+      removeEventListenerResize } = resize();
     const store = useStore();
+    const route = useRoute();
     const classobj = computed(() => {
       return {
         hideSideBar: !sidebar.value.opened,
@@ -50,19 +52,41 @@ export default {
     const fixedHeader = computed(() => {
       return store.state.settings.fixedHeader
     })
-    watchRouter
     const hasTagsView = computed(() => {
       return store.state.settings.hasTagsView
     })
-    function handleClickOutside () {
-      store.dispatch("app/closeSideBar");
-      store.dispatch('app/toggleAnimation', { withoutAnimation: false });
-    }
+    const state = reactive({
+      handleClickOutside: () => {
+        store.dispatch("app/closeSideBar");
+        store.dispatch('app/toggleAnimation', { withoutAnimation: false });
+      },
+      addTag: (route) => {
+        const { name } = route;
+        if (name) {
+          store.dispatch('tagsView/addView', route)
+        }
+        return false
+      }
+    })
+
+    watch(()=>route.path, (n,o) => {
+      console.log(n,o)
+      // mobile下 点击菜单会收缩
+      if (device.value === 'mobile' && sidebar.value.opened) {
+        store.dispatch("app/closeSideBar");
+        store.dispatch('app/toggleAnimation', {
+          withoutAnimation: true
+        })
+      }
+      state.addTag(route);
+    })
+
     onBeforeMount(() => {
       addEventListenerOnResize()
     })
     onMounted(() => {
       resizeMounted()
+      state.addTag(route);
     })
     onBeforeUnmount(() => {
       removeEventListenerResize()
@@ -72,7 +96,7 @@ export default {
       fixedHeader,
       device,
       sidebar,
-      handleClickOutside,
+      ...toRefs(state),
       hasTagsView
     }
   },

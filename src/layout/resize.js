@@ -1,15 +1,19 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 17:18:21
- * @LastEditTime: 2021-09-09 17:29:10
+ * @LastEditTime: 2021-09-10 14:32:14
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 
 import store from '@/store'
-import { computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
-
+import {
+  computed,
+  watch
+} from 'vue'
+import {
+  useRoute
+} from 'vue-router'
 const WIDTH = 992
 
 export default function () {
@@ -24,31 +28,38 @@ export default function () {
     const rect = document.body.getBoundingClientRect()
     return rect.width - 1 < WIDTH
   }
-  const currentRoute = useRoute()
-  const watchRouter = watch(() => currentRoute.name, () => {
-    // 在mobile下 点击路由会关闭侧边栏
-    if (device.value === 'mobile' && sidebar.value.opened) {
-      store.dispatch("app/closeSideBar");
-      store.dispatch('app/toggleAnimation', { withoutAnimation: true })
-    }
+  // const route = useRoute();
+  // const watchRouter = watch(
+  //   () => route.path,
+  //   (val, oval) => {
+  //     if (device.value === 'mobile' && sidebar.value.opened) {
+  //       store.dispatch("app/closeSideBar");
+  //       store.dispatch('app/toggleAnimation', {
+  //         withoutAnimation: true
+  //       })
+  //     }
+  //   }
+  // );
 
-    
-  })
   const resizeMounted = () => {
     if (isMobile()) {
       store.dispatch("app/toggleDevice", "mobile");
       store.dispatch("app/closeSideBar");
-      store.dispatch('app/toggleAnimation',{ withoutAnimation: true })
+      store.dispatch('app/toggleAnimation', {
+        withoutAnimation: true
+      })
     }
   }
 
   const resizeHandler = () => {
-     // document.hidden 页面是否隐藏
-     if (!document.hidden) {
+    // document.hidden 页面是否隐藏
+    if (!document.hidden) {
       const flag = isMobile();
       store.dispatch("app/toggleDevice", flag ? "mobile" : "desktop");
       store.dispatch("app/closeSideBar");
-      store.dispatch('app/toggleAnimation',{ withoutAnimation: true })
+      store.dispatch('app/toggleAnimation', {
+        withoutAnimation: true
+      })
     }
   }
   const addEventListenerOnResize = () => {
@@ -65,6 +76,6 @@ export default function () {
     resizeMounted,
     addEventListenerOnResize,
     removeEventListenerResize,
-    watchRouter
+    // watchRouter
   }
 }

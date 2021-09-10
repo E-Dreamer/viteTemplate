@@ -1,16 +1,17 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-09 09:24:33
- * @LastEditTime: 2021-09-09 11:08:27
+ * @LastEditTime: 2021-09-10 15:19:08
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component }" :key="key">
-      <transition name="fade-transform" mode="out-in">
+    <router-view v-slot="{ Component,route  }">
+      <transition name="fade-transform"
+                  mode="out-in">
         <keep-alive :include="cachedViews">
-          <component :is="Component" />
+          <component :is="Component" :key="route.path"/>
         </keep-alive>
       </transition>
     </router-view>
@@ -18,24 +19,18 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
 
 export default {
-  setup() {
+  setup () {
     const store = useStore();
-    const route = useRoute();
-    const state = reactive({
-      cachedViews : computed(()=>{
-        return store.getters.cachedViews
-      }),
-      key:computed(()=>{
-        return route.path;
-      })
-    })
+    const cachedViews = computed(() => {
+      return store.getters.cachedViews
+    });
     return {
-      ...toRefs(state)
+      cachedViews
     }
   },
 }
@@ -53,7 +48,6 @@ export default {
 .fixed-header + .app-main {
   padding-top: 50px;
 }
-
 </style>
 
 <style lang="less">

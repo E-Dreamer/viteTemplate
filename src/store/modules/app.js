@@ -1,12 +1,11 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-06 09:53:22
- * @LastEditTime: 2021-09-09 15:29:26
+ * @LastEditTime: 2021-09-10 09:55:50
  * @LastEditors: E-Dreamer
  * @Description:
  */
 import Cookies from "js-cookie";
-
 const app = {
   namespaced: true,
   state: {
@@ -74,7 +73,7 @@ const app = {
       commit
     }, size) {
       commit("SET_SIZE", size);
-    },
+    }
   },
 };
 

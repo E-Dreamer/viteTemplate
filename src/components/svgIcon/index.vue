@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:52:59
- * @LastEditTime: 2021-09-08 15:53:10
+ * @LastEditTime: 2021-09-10 14:55:02
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -19,7 +19,7 @@
 import { defineProps, computed } from "vue";
 
 const props = defineProps({
-  name: {
+  iconClass: {
     type: String,
     required: true
   },
@@ -29,11 +29,11 @@ const props = defineProps({
   }
 })
 
-const iconName = computed(() => `#icon-${props.name}`);
+const iconName = computed(() => `#icon-${props.iconClass}`);
 const svgClass = computed(() => {
-  console.log(props.name, 'props.name');
+  // console.log(props,props.iconClass, 'props.name');
   if (props.name) {
-    return `svg-icon icon-${props.name}`
+    return `svg-icon ${props.iconClass}`
   }
   return 'svg-icon'
 });
@@ -45,5 +45,6 @@ const svgClass = computed(() => {
   height: 1em;
   fill: currentColor;
   vertical-align: middle;
+  cursor: pointer;
 }
 </style>

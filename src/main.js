@@ -5,7 +5,7 @@ import store from '@/store'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+import Cookies from 'js-cookie'
 import i18n from '@/locales'
 // svg
 import svgIcon from '@/components/svgIcon/index.vue'
@@ -25,5 +25,9 @@ app.component('svg-icon',svgIcon)
 for(let key in icons){
   app.component(key,icons[key])
 }
-
-app.use(ElementPlus).use(router).use(store).use(i18n).mount('#app')
+app.config.globalProperties.$ELEMENT = ElementPlus
+app.use(ElementPlus,{size: Cookies.get('size') || 'medium', })
+.use(router)
+.use(store)
+.use(i18n)
+.mount('#app')

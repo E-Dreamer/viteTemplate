@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:23
- * @LastEditTime: 2021-09-09 10:32:52
+ * @LastEditTime: 2021-09-10 13:57:06
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -45,6 +45,10 @@ const permission = {
       state.routes = value;
     },
   },
-  actions: {},
+  actions: {
+    setroute({commit},routes){
+      commit('SET_ROUTE',routes)
+    }
+  },
 };
 export default permission;
