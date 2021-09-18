@@ -18,9 +18,12 @@ import * as icons from  '@element-plus/icons'
 
 // import "amfe-flexible/index.js";
 
+// 自定义组件
+import Toast from '@/components/Toast/index'
 let app = createApp(App);
 app.component('svg-icon',svgIcon)
 
+app.config.globalProperties.$Toast = Toast;
 // icons组件 全部注册
 for(let key in icons){
   app.component(key,icons[key])
