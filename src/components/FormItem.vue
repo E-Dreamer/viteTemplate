@@ -89,10 +89,10 @@
 </template>
 
 <script>
-import { $on , $emit} from 'vue-happy-bus'
+import { $on, $emit } from 'vue-happy-bus'
 // import schema from 'async-validator';
 // import {sendCaptcha} from '../api/core/Security'
-import { reactive, toRefs, computed, watch, onMounted, getCurrentInstance ,inject,onBeforeUnmount} from 'vue'
+import { reactive, toRefs, computed, watch, onMounted, getCurrentInstance, inject, onBeforeUnmount } from 'vue'
 
 const COUNTDOWN = 60;
 export default {
@@ -119,9 +119,39 @@ export default {
 
   setup (props, context) {
     const _this = getCurrentInstance()
-    
+
     const injectRules = inject('rules'); //注入父组件中的变量，需要在父组件中通过 provide 提供
-    
+
+    const dispatch = (componentName, eventName, params) => {
+      const { ctx: { $parent, $root } } = _this;
+      let parent = $parent || $root;//$parent 找到最近的父节点 $root 根节点
+      let name = parent.$options.name; // 获取当前组件实例的name
+      // 如果当前有节点 && 当前没名称 且 当前名称等于需要传进来的名称的时候就去查找当前的节点
+      // 循环出当前名称的一样的组件实例
+      while (parent && (!name || name !== componentName)) {
+        parent = parent.$parent;
+        if (parent) {
+          name = parent.$options.name;
+        }
+      }
+      // 有节点表示当前找到了name一样的实例
+      if (parent) {
+        // parent.$emit.apply(parent,[eventName].concat(params))
+        $emit.apply(parent,[eventName].concat(params))
+        // parent.$emit(eventName, params)
+      }
+    }
+
+    // 派发事件，通知上级组件添加表单域
+    // 如果没有传入type，则无需校验，也就无需缓存
+    if (props.type) {
+      dispatch('FormGroup', 'on-form-item-add', _this.ctx);
+      // 设置初始值，以便在重置时恢复默认值
+      //this.initialValue = this.inputValue;
+      // 添加表单校验
+      //this.setRules()
+    }
+
     const state = reactive({
 
       hasSubmit: false,   // 防重复提交
@@ -145,7 +175,7 @@ export default {
     })
     watch(() => state.inputValue, (newv) => {
       // context.emit('input', newv)
-      context.emit('update:modelValue',newv)
+      context.emit('update:modelValue', newv)
     })
     watch(() => props.error, (newv) => {
       state.error_msg = newv;
@@ -153,51 +183,23 @@ export default {
 
     onMounted(() => {
       // 发送手机号输入事件，主要用于获取验证码处的监听
-      if (state.type === 'mobile') {
+      if (props.type === 'mobile') {
         $emit('on-mobile-input-filed', _this.ctx)
       }
       // 接收手机号输入框
-      if (state.type === 'mobileCaptcha') {
+      if (props.type === 'mobileCaptcha') {
         $on('on-mobile-input-filed', item => {
           state.mobileInputFiled = item
         })
       }
-
-      // 派发事件，通知上级组件添加表单域
-      // 如果没有传入type，则无需校验，也就无需缓存
-      if (state.type) {
-        dispatch('FormGroup', 'on-form-item-add', _this.ctx);
-        // 设置初始值，以便在重置时恢复默认值
-        //this.initialValue = this.inputValue;
-        // 添加表单校验
-        //this.setRules()
-      }
-
     })
 
     //beforeDestory
-    onBeforeUnmount(()=>{
-       // 派发事件，通知上级组件销毁表单域
-       dispatch('FormGroup', 'on-form-item-remove', _this);
+    onBeforeUnmount(() => {
+      // 派发事件，通知上级组件销毁表单域
+      dispatch('FormGroup', 'on-form-item-remove', _this.ctx);
     })
-    const dispatch = (componentName, eventName, params) => {
-      const { ctx: { $parent, $root } } = _this;
-      console.log($parent, $root)
-      let parent = $parent || $root;//$parent 找到最近的父节点 $root 根节点
-      let name = parent.$options.name; // 获取当前组件实例的name
-      // 如果当前有节点 && 当前没名称 且 当前名称等于需要传进来的名称的时候就去查找当前的节点
-      // 循环出当前名称的一样的组件实例
-      while (parent && (!name || name !== componentName)) {
-        parent = parent.$parent;
-        if (parent) {
-          name = parent.$options.name;
-        }
-      }
-      // 有节点表示当前找到了name一样的实例
-      if (parent) {
-        parent.$emit.apply(parent, [eventName].concat(params))
-      }
-    }
+
     // 获取短信验证码
     const getMobileCaptcha = () => {
 
@@ -234,9 +236,9 @@ export default {
       }
       state.hasSubmit = false;
     }
-    
+
     // 验证输入框的内容是否符合规则
-    const validation= (trigger, callback = function () { })=> {
+    const validation = (trigger, callback = function () { }) => {
 
       // blur 和 change 是否有当前方式的规则
       let rules = getFilteredRule(trigger);
@@ -266,20 +268,20 @@ export default {
         callback(state.error_msg);
       });
     }
-        /**
-     * 从 FormGroup 的 rules 属性中，获取当前 FormItem 的校验规则
-     */
-    const getRules =  () =>{
+    /**
+ * 从 FormGroup 的 rules 属性中，获取当前 FormItem 的校验规则
+ */
+    const getRules = () => {
 
       let rules = injectRules;
       rules = rules ? rules[state.type] : [];
 
       return [].concat(rules || [])//这种写法可以让规则肯定是一个数组的形式
     }
-      /**
-     * 绑定事件 进行是否 required 校验
-     */
-    const setRules = ()=> {
+    /**
+   * 绑定事件 进行是否 required 校验
+   */
+    const setRules = () => {
 
       let rules = getRules();    //拿到父组件中当前需要使用的规则
       if (rules.length) {
@@ -295,12 +297,12 @@ export default {
       // change 事件
       $on('on-form-change', onFieldChange)
     }
-      
+
     /**
      * 只支持 blur 和 change，所以过滤出符合要求的 rule 规则
      * 该方法只是对getRules方法返回内容进行了下筛选
      */
-   const getFilteredRule =  (trigger) => {
+    const getFilteredRule = (trigger) => {
 
       let rules = getRules();
       // !res.trigger 没有调用方式的时候，默认进行校验
@@ -309,11 +311,11 @@ export default {
     }
 
     // blue 进行表单校验
-   const onFieldBlur =()=> {
+    const onFieldBlur = () => {
       validation('blur')
     }
     // change 进行表单校验
-   const onFieldChange = ()=> {
+    const onFieldChange = () => {
       validation('change')
     }
 

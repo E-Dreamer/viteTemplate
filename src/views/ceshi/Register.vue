@@ -112,7 +112,6 @@ export default {
                 return;
             }
             this.hasSubmit = true; 
-
            this.$refs.formGroup.validate().then((valid) => {
                    
                 if(!valid){

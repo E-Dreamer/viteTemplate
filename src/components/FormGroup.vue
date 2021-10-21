@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, provide, onBeforeMount } from 'vue'
+import { reactive, toRefs, provide, onBeforeMount, nextTick } from 'vue'
 import { $on } from 'vue-happy-bus'
 export default {
   name: "FormGroup",
@@ -35,6 +35,7 @@ export default {
         let valid = true;   // 默认是通过
         let count = 0;      // 来匹配当前是否是全部检查完
         // 循环调用每个表单项中的验证函数
+        console.log(state.fields,'拿到的验证函数')
         state.fields.forEach(field => {
           field.validation('', errorMsg => {
             // 只要有一个不符合那么当前的校验就是未通过的
@@ -51,7 +52,9 @@ export default {
       })
     }
     onBeforeMount(() => {
+      console.log('进来')
       $on('on-form-item-add', item => {
+        console.log(item)
         if (item) {
           state.fields.push(item)
         }
@@ -59,6 +62,7 @@ export default {
 
       //formGroup中动态删除表单项
       $on('on-form-item-remove', item => {
+        console.log(item)
         if (item.type) {// 如果当前没有type的话，表示当前不要进行删除（因为没有注入）
           state.fields.splice(state.fields.indexOf(item), 1)
         }
