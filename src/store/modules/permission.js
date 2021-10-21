@@ -1,16 +1,9 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:23
- * @LastEditTime: 2021-09-10 13:57:06
+ * @LastEditTime: 2021-10-21 13:33:11
  * @LastEditors: E-Dreamer
  * @Description: 
- */
-/*
- * @Author: 陈诚
- * @Date: 2021-09-07 09:57:47
- * @LastEditTime: 2021-09-07 11:01:57
- * @LastEditors: 陈诚
- * @Description:
  */
 const permission = {
   namespaced: true,
@@ -38,6 +31,16 @@ const permission = {
           icon: "el-icon-menu",
         },
       },
+      {
+        parentName:'Layout',
+        name:"ceshi",
+        path:'/ceshi',
+        component:()=>import('@/views/ceshi/Register.vue'),
+        meta: {
+          title: "测试",
+          icon: "el-icon-menu",
+        },
+      }
     ],
   },
   mutations: {
