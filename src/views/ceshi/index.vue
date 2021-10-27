@@ -1,5 +1,5 @@
 <template>
-  <childTmp @inputMsg='fn'></childTmp>
+  <childTmp v-model='count'></childTmp>
 </template>
 
 
@@ -9,11 +9,11 @@ import childTmp from './child.vue'
 export default {
   components:{childTmp},
   setup() {
-    const fn = (value)=>{
-      console.log(value)
-    }
+    const state = reactive({
+      count:0
+    })
     return {
-      fn,
+      ...toRefs(state)
     }
   },
 }

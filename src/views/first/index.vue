@@ -1,87 +1,148 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:25:07
- * @LastEditTime: 2021-10-21 11:08:39
+ * @LastEditTime: 2021-10-27 16:40:33
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
-  <div>first {{count}}</div>
-  <el-form ref="ruleForm1"
-           :model="ruleForm"
-           status-icon
-           :rules="rules"
-           label-width="120px"
-           class="demo-ruleForm">
-    <el-form-item label="Password"
-                  prop="pass">
-      <el-input v-model="ruleForm.pass"
-                type="password"
-                autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="Confirm"
-                  prop="checkPass">
-      <el-input v-model="ruleForm.checkPass"
-                type="password"
-                autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="Age"
-                  prop="age">
-      <el-input v-model.number="ruleForm.age"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary"
-                 @click="submitForm('ruleForm1')">Submit</el-button>
-      <el-button @click="resetForm('ruleForm1')">Reset</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="first">
+    <!-- <el-dialog v-model="dialogVisible" title="Tips" width="30%" :before-close="handleClose">
+      <SForm ref="ruleForm" :formList="formList" :form="form" :rules="rules"></SForm>
+      <el-button @click="see">查看</el-button>
+    </el-dialog> -->
 
+    <!-- <el-button @click='dialogVisible=true'>弹出</el-button> -->
+     <SForm ref="ruleForm" :formList="formList" :form="form" :rules="rules"></SForm>
+      <el-button @click="see">查看</el-button>
+  </div>
 </template>
 
 <script>
-import { onMounted, reactive, toRefs,watch } from 'vue'
+import SForm from '@com/SForm/index.vue'
+import { onMounted, reactive, toRefs, watch, ref } from 'vue'
 export default {
   name: "first",
+  components: { SForm },
+
   setup () {
-    const getCount = () => {
-      console.log(state.count)
-    }
     onMounted(() => {
-      getCount()
+
     })
+    const ruleForm = ref(null)
+
     const state = reactive({
-      count: 10,
-      rules: {},
-      ruleForm:{
-         pass: '',
-         checkPass: '',
-         age: '12',
-      }
+      dialogVisible: false,
+      formList: [
+        {
+          label: '第一项',
+          key: 'firstValue',
+          // labelWidth:"100",
+          type: "input",
+          plac: '请输入第一项',
+          colSpan: 24
+        },
+        {
+          label: '第二项',
+          key: 'secondValue',
+          type: 'input',
+          subType: 'number',
+          max: 2,
+          colSpan: 24
+        },
+        {
+          label: '第三项',
+          key: 'threeValue',
+          type: 'input',
+          subType: 'textarea',
+          rows: 5,
+          colSpan: 24
+        },
+        {
+          label: '第四项',
+          key: 'fourValue',
+          type: 'radio',
+          colSpan: 24,
+          options: [
+            {
+              label: '3',
+              value: 'lalal'
+            },
+            {
+              label: '4',
+              value: 'asdasd'
+            },
+            {
+              label: 5,
+              value: '123123'
+            }
+          ]
+        },
+        {
+          label: '第五项',
+          key: 'fiveValue',
+          type: 'select',
+          colSpan: 24,
+          options: [
+            {
+              label: 'lalalal',
+              value: 2
+            },
+            {
+              label: 'asdasd',
+              value: 4
+            },
+            {
+              label: 'ajsdjaskhd',
+              value: '7'
+            }
+          ],
+          // labelFilter:(item)=>{
+          //   return `这是${item.label}_${item.value}`
+          // }
+          // filter:(val,options)=>{
+          //   return options.map(item=>{
+          //     return item.label.includes(val)
+          //   })
+          // }
+        },
+        {
+          label: '第六项',
+          key: 'sixValue',
+          type: 'switch',
+          colSpan: 24
+        }
+      ],
+      form: {
+        firstValue: '',
+        secondValue: 2,
+        threeValue: '',
+        fourValue: '',
+        fiveValue: '',
+        sixValue: ''
+      },
+      rules: {
+        firstValue: [{
+          required: true,
+          message: 'Please input Activity name',
+          trigger: 'blur',
+        }]
+      },
     })
-    watch(state.ruleForm,(newv,oldv)=>{
-      console.log(newv,oldv)
-    })
-    
+    const see = () => {
+      ruleForm.value.submit().then(res => {
+        console.log(res)
+      })
+    }
+    const handleClose = () => {
+      state.dialogVisible = false
+    }
     return {
       ...toRefs(state),
-      getCount,
+      see,
+      ruleForm,
+      handleClose
     }
-  },
-  methods: {
-    submitForm (formName) {
-      console.log(this.ruleForm.model.age)
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
-    },
   }
 }
 </script>

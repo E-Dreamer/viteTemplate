@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:51
- * @LastEditTime: 2021-09-18 13:57:47
+ * @LastEditTime: 2021-10-27 09:37:07
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -17,10 +17,10 @@ export default {
     const {appContext:{config:{globalProperties:{$Toast}}}} = getCurrentInstance()
     onMounted(() => {
       console.log('缓存的页面')
-      $Toast({
-        message:'提示',
-        duration:4000
-      })
+      // $Toast({
+      //   message:'提示',
+      //   duration:4000
+      // })
     })
   },
 }
