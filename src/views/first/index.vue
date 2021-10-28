@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:25:07
- * @LastEditTime: 2021-10-27 16:40:33
+ * @LastEditTime: 2021-10-28 09:06:35
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -40,7 +40,7 @@ export default {
           // labelWidth:"100",
           type: "input",
           plac: '请输入第一项',
-          colSpan: 24
+          colSpan: 6
         },
         {
           label: '第二项',
@@ -48,7 +48,7 @@ export default {
           type: 'input',
           subType: 'number',
           max: 2,
-          colSpan: 24
+          colSpan: 6
         },
         {
           label: '第三项',
@@ -56,13 +56,13 @@ export default {
           type: 'input',
           subType: 'textarea',
           rows: 5,
-          colSpan: 24
+          colSpan: 6
         },
         {
           label: '第四项',
           key: 'fourValue',
           type: 'radio',
-          colSpan: 24,
+          colSpan: 6,
           options: [
             {
               label: '3',
@@ -82,7 +82,7 @@ export default {
           label: '第五项',
           key: 'fiveValue',
           type: 'select',
-          colSpan: 24,
+          colSpan: 12,
           options: [
             {
               label: 'lalalal',
@@ -110,7 +110,7 @@ export default {
           label: '第六项',
           key: 'sixValue',
           type: 'switch',
-          colSpan: 24
+          colSpan: 12
         }
       ],
       form: {
