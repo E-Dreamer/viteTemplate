@@ -1,12 +1,13 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-10-21 11:40:25
- * @LastEditTime: 2021-10-27 10:19:20
+ * @LastEditTime: 2021-11-01 09:42:46
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <el-input v-model="msg"></el-input>
+  <el-input type='textarea' v-model="msg1"></el-input>
 </template>
 
 <script >
@@ -15,18 +16,28 @@ export default {
   name:"child",
   props:{
     count:{
-      type:Number | String
+      type:[Number,String],
+      default:''
+    },
+    text:{
+      type:String
     }
   },
+  emits:['update:count','update:text'],
   setup (props,content) {
     console.log(props,content)
     const state = reactive({
-      msg: ''
+      msg: '',
+      msg1:''
     })
-
-    // watch(()=>state.msg,(newv)=>{
-    //   content.emit('inputMsg',newv)
-    // })
+    //单个v-model emit触发的事件名为 update:modelValue
+    // 多个v-model就是update:props的名称
+    watch(()=>state.msg,(newv)=>{
+      content.emit('update:count',newv)
+    })
+     watch(()=>state.msg1,(newv)=>{
+      content.emit('update:text',newv)
+    })
     return {
       ...toRefs(state)
     }
