@@ -15,7 +15,17 @@ export default {
   setup () {
     const state = reactive({
       count: 0,
-      text: ''
+      text: '',
+      arr:[
+        {
+          label:"asdsad",
+          value:1
+        },
+        {
+          label:"saddsd",
+          value:2,
+        }
+      ]
     })
     return {
       ...toRefs(state)

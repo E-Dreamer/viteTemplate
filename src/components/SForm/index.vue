@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-10-26 16:57:14
- * @LastEditTime: 2021-10-28 09:51:01
+ * @LastEditTime: 2021-11-02 16:26:20
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -49,11 +49,15 @@ export default {
         return {}
       },
     },
+    isScroll:{
+      type:Boolean,
+      default:true
+    }
   },
   setup (props, context) {
     const SForm = ref(null)
     const scroll = (fields) => {
-      const dom = document.getElementsByClassName('el-form')
+      const dom = document.getElementsByClassName('el-overlay')
       let top
       nextTick(() => {
         const error = document.getElementsByClassName('el-form-item__error')
@@ -66,14 +70,14 @@ export default {
           if (dom[0].scrollTop >= top) {
             const timeTop = setInterval(() => {
               dom[0].scrollTop -= 20 // 可以自己设置
-              if (dom[0].scrollTop <= top - 55) {
+              if (dom[0].scrollTop <= top) {
                 clearInterval(timeTop)
               }
             }, 10)
           } else {
             const timeTop = setInterval(() => {
               dom[0].scrollTop += 20 // 可以自己设置
-              if (dom[0].scrollTop >= top - 55) {
+              if (dom[0].scrollTop >= top) {
                 clearInterval(timeTop)
               } else if (
                 dom[0].scrollTop + dom[0].clientHeight >=
@@ -85,14 +89,12 @@ export default {
           }
         }
       })
-      console.log(dom)
     }
     // 提交校验
     const submit = () => {
       return new Promise((resolve, reject) => {
         SForm.value.validate((valid, fields) => {
           if (valid) {
-            console.log('提交')
             resolve(props.form)
           } else {
             // 滚动到未填写处
