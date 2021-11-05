@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-10-26 16:57:14
- * @LastEditTime: 2021-11-03 09:13:34
+ * @LastEditTime: 2021-11-03 10:08:08
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -59,11 +59,14 @@ export default {
       return store.getters.size;
     })
     const initForm = ()=>{
+      if(SForm.value){
+        SForm.value.resetFields()
+      }
       if(JSON.stringify(props.formConfig.form) !== '{}'){
-        state.form = Object.assign({},props.formConfig.form)
+        state.form = props.formConfig.form
       }
       if(JSON.stringify(props.formConfig.rules) !== '{}'){
-        state.rules = Object.assign({},props.formConfig.rules)
+        state.rules = props.formConfig.rules
       }
     }
 

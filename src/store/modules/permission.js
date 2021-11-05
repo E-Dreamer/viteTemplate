@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:23
- * @LastEditTime: 2021-11-01 09:30:45
+ * @LastEditTime: 2021-11-05 13:52:29
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -40,6 +40,16 @@ const permission = {
           title: "测试",
           icon: "el-icon-menu",
         },
+      },
+      {
+        parentName:"Layout",
+        name:'docxexport',
+        path:'/docxexport',
+        component:()=>import('@/views/docxexport/index.vue'),
+        meta:{
+          title:'docx模板导出',
+          icon:"el-icon-menu"
+        }
       }
     ],
   },

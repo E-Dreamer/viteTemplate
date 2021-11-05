@@ -1,14 +1,14 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:25:07
- * @LastEditTime: 2021-11-03 08:58:44
+ * @LastEditTime: 2021-11-03 10:07:28
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <div class="first">
     <el-dialog v-model="dialogVisible" title="Tips" width="30%" :before-close="handleClose">
-      <SForm ref="ruleForm" :formConfig='formConfig'></SForm>
+      <SForm v-if='dialogVisible' ref="ruleForm" :formConfig='formConfig'></SForm>
       <el-button @click="see">查看</el-button>
     </el-dialog>
 
