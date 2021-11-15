@@ -1,23 +1,23 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:51
- * @LastEditTime: 2021-11-15 09:50:37
+ * @LastEditTime: 2021-11-15 15:30:09
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <div>home</div>
-  {{msg}}
+  {{ msg }}
   <el-button v-copy="msg">复制msg内容</el-button>
   <el-button @click="change">点击改变msg</el-button>
 </template>
 
 <script>
-import { onMounted, getCurrentInstance, ref, unref, provide, reactive,toRefs } from 'vue'
+import { onMounted, getCurrentInstance, ref, unref, provide, reactive, toRefs } from 'vue'
 export default {
   name: 'home',
-  setup () {
-    const { appContext: { config: { globalProperties: { $Toast } } } } = getCurrentInstance()
+  setup (props, context) {
+    const { appContext: { config: { globalProperties: { $Toast, $MesBox } } } } = getCurrentInstance()
     const count = ref(12)
     provide('name', '张三')
 
@@ -26,12 +26,16 @@ export default {
     })
     onMounted(() => {
       console.log('缓存的页面')
-      // $Toast({
-      //   message:'提示',
-      //   duration:4000
-      // })
+      $Toast({
+        message: '提示',
+        duration: 4000
+      })
+
+      $MesBox({ title: '标题', type: 'success', message: "这是内容",showCancelButton:true }).then(
+        () => { console.log('点击确定') }
+      ).catch(() => { console.log('点击取消') })
     })
-    const change = ()=>{
+    const change = () => {
       state.msg = '改变了自定义指令复制的内容'
     }
     return {

@@ -21,10 +21,14 @@ import directive from './directive'
 
 // 自定义组件
 import Toast from '@/components/Toast/index'
+import MesBox from '@/components/MesBox/index'
+
 let app = createApp(App);
 app.component('svg-icon',svgIcon)
 
 app.config.globalProperties.$Toast = Toast;
+app.config.globalProperties.$MesBox = MesBox;
+
 // icons组件 全部注册
 for(let key in icons){
   app.component(key,icons[key])
