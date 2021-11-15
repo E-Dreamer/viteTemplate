@@ -16,6 +16,7 @@ import '@/styles/index.less'
 
 import * as icons from  '@element-plus/icons'
 
+import directive from './directive'
 // import "amfe-flexible/index.js";
 
 // 自定义组件
@@ -28,6 +29,10 @@ app.config.globalProperties.$Toast = Toast;
 for(let key in icons){
   app.component(key,icons[key])
 }
+//自定义指令
+Object.keys(directive).forEach(key=>{
+  app.directive(key,directive[key])
+})
 app.config.globalProperties.$ELEMENT = ElementPlus
 app.use(ElementPlus,{size: Cookies.get('size') || 'medium', })
 .use(router)
