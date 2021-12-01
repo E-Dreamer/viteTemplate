@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:51
- * @LastEditTime: 2021-11-15 15:30:09
+ * @LastEditTime: 2021-12-01 09:39:59
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -13,12 +13,13 @@
 </template>
 
 <script>
-import { onMounted, getCurrentInstance, ref, unref, provide, reactive, toRefs } from 'vue'
+import { onMounted, getCurrentInstance, ref, unref, provide, reactive, toRefs, inject } from 'vue'
 export default {
   name: 'home',
   setup (props, context) {
-    const { appContext: { config: { globalProperties: { $Toast, $MesBox } } } } = getCurrentInstance()
+    const { appContext: { config: { globalProperties: { $Toast } } } } = getCurrentInstance()
     const count = ref(12)
+    const $MesBox = inject('$MesBox')
     provide('name', '张三')
 
     const state = reactive({
