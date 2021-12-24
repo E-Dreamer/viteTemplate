@@ -1,13 +1,13 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-11-05 13:33:02
- * @LastEditTime: 2021-12-16 09:32:42
+ * @LastEditTime: 2021-12-24 14:23:12
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <div>
-    <el-button @click="print">导出</el-button>
+    <el-button @click="print" class="button">导出</el-button>
     <el-timeline ref="timeLine" id="timeLine">
       <el-timeline-item
         v-for="(activity, index) in activities"
@@ -172,6 +172,6 @@ export default {
       ...toRefs(state),
       timeLine
     }
-  },
+  }
 }
 </script>

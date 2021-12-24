@@ -5,7 +5,8 @@
     "dev": "vite --mode build --host",
     "build": "vite build",
     "serve": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
@@ -32,18 +33,29 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@types/jest": "^26.0.24",
     "@vitejs/plugin-vue": "^1.2.5",
     "@vitejs/plugin-vue-jsx": "^1.2.0",
+    "@vue/babel-plugin-jsx": "^1.1.1",
     "@vue/compiler-sfc": "^3.0.5",
+    "@vue/test-utils": "^2.0.0-rc.18",
     "amfe-flexible": "^2.2.1",
+    "babel-jest": "^26.0.0",
     "husky": "^7.0.2",
+    "jest": "^26.0.0",
     "lint-staged": "^11.1.2",
     "postcss-pxtorem": "^6.0.0",
     "svg-sprite-loader": "^6.0.9",
+    "ts-jest": "^26.4.4",
     "vite": "^2.4.3",
-    "vue-happy-bus": "^2.0.1-vue3"
+    "vue-happy-bus": "^2.0.1-vue3",
+    "vue-jest": "^5.0.0-alpha.10"
   },
   "husky": {
     "hooks": {

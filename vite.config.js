@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, 'src'),
+      "@v":path.resolve(__dirname,'src/views'),
       "@com": path.resolve(__dirname, 'src/components'),
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
     },
