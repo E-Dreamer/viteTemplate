@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      position: relative;
+      overflow: hidden;
+      margin: auto;
+      height: 400px;
+      width: 700px;
+    }
+
+    .tools {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      z-index: 99;
+      justify-content: space-between;
+    }
+
+    .container_item_container {
+      /* display: flex; */
+      position: absolute;
+      height: 100%;
+    }
+
+    .container_item_container>img {
+      /* flex: 1; */
+      float: left;
+      height: 100%;
+      width: 700px;
+    }
+
+    .circle {
+      position: absolute;
+      bottom: 10px;
+      z-index: 99;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      list-style: none;
+    }
+
+    .circle>li {
+      cursor: pointer;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      background-color: #fff;
+      margin-left: 6px;
+    }
+
+    .circle>li:first-child {
+      margin-left: 0;
+    }
+
+    .circle>li.active {
+      width: 24px;
+      background-color: aqua;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="tools">
+      <button id='left'>左</button>
+      <button id='right'>右</button>
+    </div>
+    <div class="container_item_container">
+      <img src="https://img0.baidu.com/it/u=28609080,4183460386&fm=26&fmt=auto" alt="">
+      <img src="https://img0.baidu.com/it/u=4189815555,3711530879&fm=26&fmt=auto" alt="">
+      <img src="https://img1.baidu.com/it/u=1252361604,2181499385&fm=26&fmt=auto" alt="">
+    </div>
+  </div>
+</body>
+<script>
+  const container = document.querySelector('.container')
+  const imgBox = document.querySelector('.container_item_container')
+
+  const length = imgBox.children.length;
+
+  let page = 0;
+  const width = 700;
+  // imgBox.style.width = length * 100 + '%';
+  imgBox.style.width = (length + 1) * width + 'px'
+  //缓动动画
+  const slotAction = (obj, target, timeout) => {
+    clearInterval(obj.timer);
+    obj.timer = setInterval(() => {
+      step = (target - obj.offsetLeft) / 10;
+      step = step > 0 ? Math.ceil(step) : Math.floor(step);
+      if (obj.offsetLeft == target) {
+        clearInterval(obj.timer);
+      }
+      obj.style.left = obj.offsetLeft + step + 'px'
+
+    }, timeout);
+  }
+  //改变图片的位置
+  const changeImg = () => {
+    // imgBox.style.left = -page * 100 + '%'
+    // imgBox.style.left =  -page * width + 'px'
+    const target = -page * width;
+    slotAction(imgBox, target, 30)
+    setCircleName(page);
+  }
+  //小圆点类名设置
+  const setCircleName = (index) => {
+    const circle = document.querySelector('.circle')
+    for (let i = 0; i < circle.children.length; i++) {
+      circle.children[i].className = ''
+    }
+    if (index == length) {
+      circle.children[0].className = 'active'
+    } else {
+      circle.children[index].className = 'active'
+    }
+  }
+
+  document.getElementById('left').addEventListener('click', () => {
+    if (page === 0) {
+      //最后一张 复制第一张的
+      imgBox.style.left = -length * width + 'px'
+      page = length;
+    }
+    page--;
+    changeImg()
+  })
+  document.getElementById('right').addEventListener('click', () => {
+    // 到了最后一张 点击才进来
+    if (page === length) {
+      imgBox.style.left = 0;
+      page = 0;
+    }
+    page++
+    changeImg()
+  })
+
+  //克隆第一张图片
+  imgBox.appendChild(imgBox.children[0].cloneNode(true));
+  //生成小圆点
+  const setCircle = () => {
+    const ul = document.createElement('ul')
+    ul.className = 'circle'
+    for (let i = 0; i < length; i++) {
+      const li = document.createElement('li')
+      li.addEventListener('click', () => {
+        console.log('点击', i)
+        page = i;
+        changeImg()
+      })
+      ul.appendChild(li)
+    }
+    ul.children[page].className = 'active'
+
+    container.appendChild(ul)
+  }
+
+  setCircle()
+</script>
+
+</html>
