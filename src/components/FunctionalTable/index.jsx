@@ -10,7 +10,6 @@ const FunctionalTable = (props,context)=>{
   const vNodes = context.slots.default();
   // 过滤 vNodes
   const filteredVNodes = props.visibleKeys === null ? vNodes : vNodes.filter(node => props.visibleKeys.includes(node?.props?.prop))
-  console.log(filteredVNodes)
  // 把属性透传给el-table 
  return <el-table {...context.attrs}>
   {filteredVNodes}

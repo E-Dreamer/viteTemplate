@@ -1,22 +1,21 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-09 09:24:33
- * @LastEditTime: 2021-12-15 14:42:54
+ * @LastEditTime: 2022-01-10 13:27:49
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component,route  }">
-      <!-- <transition name="fade-transform"
-                  mode="out-in">
-         <keep-alive :include="cachedViews">
-          <component :is="Component" :key="route.path"/>
+    <router-view v-slot="{ Component, route }">
+      <transition name="fade-transform" mode="out-in" :key="route.path">
+        <keep-alive :include="cachedViews">
+          <component :is="Component" :key="route.path" />
         </keep-alive>
-      </transition> -->
-      <keep-alive :include="cachedViews">
+      </transition>
+      <!-- <keep-alive :include="cachedViews">
           <component :is="Component" :key="route.path"/>
-        </keep-alive>
+      </keep-alive>-->
     </router-view>
   </section>
 </template>
