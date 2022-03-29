@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:23
- * @LastEditTime: 2021-12-29 09:06:08
+ * @LastEditTime: 2022-03-16 16:17:32
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -54,7 +54,7 @@ const permission = {
       {
         parentName:'Layout',
         name:'functionPostting',
-        path:'functionPostting',
+        path:'/functionPostting',
         component:()=>import('@/views/functionPostting/index.vue'),
         meta:{
           title:"函数式的封装",

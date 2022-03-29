@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-10-21 11:40:25
- * @LastEditTime: 2021-11-08 13:56:23
+ * @LastEditTime: 2022-03-16 16:24:07
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -21,6 +21,9 @@ export default {
     },
     text:{
       type:String
+    },
+    getDom:{
+      type:Function
     }
   },
   emits:['update:count','update:text'],

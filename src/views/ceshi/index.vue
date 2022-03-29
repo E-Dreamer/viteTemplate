@@ -1,6 +1,6 @@
 <template>
   <div>
-    <childTmp v-model:count="count" v-model:text='text'></childTmp>
+    <childTmp v-model:count="count" v-model:text='text' :getDom="getDom"></childTmp>
     <p>{{ count }}</p>
     <p>{{ text }}</p>
   </div>
@@ -27,8 +27,15 @@ export default {
         }
       ]
     })
+
+    const getDom = ()=>{
+      return `<div>这是什么玩意</div>
+         <span>这是傻子呀</span>`
+    }
+    
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      getDom
     }
   },
 }
