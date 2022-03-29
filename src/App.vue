@@ -9,6 +9,7 @@ export default {
   setup () {
     const i18n = useI18n()
     var jsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+    console.log(jsSrc)
     sessionStorage.setItem('locale', jsSrc);
     i18n.locale.value = jsSrc;
   }

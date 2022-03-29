@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-10 09:26:13
- * @LastEditTime: 2021-09-10 10:42:35
+ * @LastEditTime: 2022-03-29 11:50:12
  * @LastEditors: E-Dreamer
  * @Description: 改变语言
 -->
@@ -39,7 +39,7 @@ export default {
         { label: 'English', value: 'en' },
       ],
       handleSetSize: (value) => {
-        sessionStorage.setItem('locale', value);
+        // sessionStorage.setItem('locale', value);
         i18n.locale.value = value
       },
     })

@@ -2,14 +2,20 @@
   "name": "vitetemplate",
   "version": "0.0.0",
   "scripts": {
+    "serverdev": "node server",
     "dev": "vite --mode build --host",
-    "build": "vite build",
+    "build": "npm run build:client && npm run build:server",
+    "build:noExternal": "npm run build:client && npm run build:server:noExternal",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
+    "build:server:noExternal": "vite build --config vite.config.noexternal.js --ssr src/entry-server.js --outDir dist/server",
     "serve": "vite preview",
     "prepare": "husky install",
     "test": "jest"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
+    "@vue/server-renderer": "^3.2.31",
     "async-validator": "^4.0.7",
     "autoprefixer": "^10.3.4",
     "docxtemplater": "^3.12.0",
@@ -26,7 +32,7 @@
     "path-to-regexp": "^6.2.0",
     "pizzip": "^3.1.1",
     "screenfull": "^5.1.0",
-    "vue": "^3.0.5",
+    "vue": "^3.2.31",
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
