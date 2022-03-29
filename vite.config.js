@@ -24,7 +24,7 @@ export default defineConfig({
 
   // },
   server: {
-    host: '127.0.0,1', // 默认是 localhost
+    host: '127.0.0.1', // 默认是 localhost
     port: '3000', // 默认是 3000 端口
     strictPort: false, // 若端口被占用直接退出 而不是尝试下一个可用端口
     open: true, // 浏览器自动打开
