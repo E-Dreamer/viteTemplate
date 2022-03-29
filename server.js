@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-03-29 11:05:21
- * @LastEditTime: 2022-03-29 11:05:22
+ * @LastEditTime: 2022-03-29 16:50:17
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -10,7 +10,7 @@ const path = require('path')
 const express = require('express')
 
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
-
+const serialize = require('serialize-javascript');
 async function createServer(
   root = process.cwd(),
   isProd = process.env.NODE_ENV === 'production'
@@ -71,12 +71,17 @@ async function createServer(
         template = indexProd
         render = require('./dist/server/entry-server.js').render
       }
-
+       // 调用服务端渲染方法，将vue组件渲染成dom结构，顺带分析出需要预加载的js，css等文件。
       const [appHtml, preloadLinks] = await render(url, manifest)
+      
+       // 新加 + 将服务端预取数据的store，插入html模板文件
+      const state = ("<script>window.__INIT_STATE__" + "=" + serialize(store, { isJSON: true }) + "</script>");
 
+      // 把html中的展位符替换成相对应的资源文件
       const html = template
         .replace(`<!--preload-links-->`, preloadLinks)
         .replace(`<!--app-html-->`, appHtml)
+        // .replace(`<!--app-store-->`, state)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {

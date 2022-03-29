@@ -1,13 +1,13 @@
 // 基本的
 // import { createApp } from 'vue'
 // SSR
-import {  createSSRApp } from 'vue'
+import { createSSRApp } from 'vue'
 import App from './App.vue'
 // import router from '@/router'
+// import store from '@/store'
 //SSR
 import { createRouter } from '@/router'
-import store from '@/store'
-
+import { createStore } from '@/store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import Cookies from 'js-cookie'
@@ -56,6 +56,8 @@ export function createApp() {
   let app = createSSRApp(App)
 
   const router = createRouter()
+  const store = createStore()
+
   app.component('svg-icon', svgIcon)
 
   app.config.globalProperties.$Toast = Toast
@@ -78,5 +80,5 @@ export function createApp() {
     .use(i18n)
     .mount('#app')
 
-  return {app,router}
+  return { app, router, store }
 }

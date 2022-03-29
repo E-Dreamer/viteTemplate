@@ -1,12 +1,14 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 17:18:21
- * @LastEditTime: 2021-09-10 14:32:14
+ * @LastEditTime: 2022-03-29 17:00:23
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 
-import store from '@/store'
+// import store from '@/store'
+import {createStore} from '@/store'
+const store = createStore()
 import {
   computed,
   watch
