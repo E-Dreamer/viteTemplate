@@ -2,8 +2,8 @@
   "name": "vitetemplate",
   "version": "0.0.0",
   "scripts": {
-    "serverdev": "node server",
-    "dev": "vite --mode build --host",
+    "ssr": "node server",
+    "dev": "vite --mode build",
     "build": "npm run build:client && npm run build:server",
     "build:noExternal": "npm run build:client && npm run build:server:noExternal",
     "build:client": "vite build --ssrManifest --outDir dist/client",

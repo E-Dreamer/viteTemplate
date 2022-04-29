@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-12-24 11:10:44
- * @LastEditTime: 2021-12-24 13:38:33
+ * @LastEditTime: 2022-04-22 11:19:06
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -9,6 +9,7 @@ const path = require('path')
 
 module.exports = {
   rootDir: path.resolve(__dirname),
+  //在每次测试之前自动清除模拟调用、实例和结果。 在每次测试之前调用 jest.clearAllMocks() 这不会删除可能已提供的任何模拟实现。
   clearMocks: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',

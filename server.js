@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-03-29 11:05:21
- * @LastEditTime: 2022-03-29 16:50:17
+ * @LastEditTime: 2022-03-30 16:33:12
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -81,7 +81,7 @@ async function createServer(
       const html = template
         .replace(`<!--preload-links-->`, preloadLinks)
         .replace(`<!--app-html-->`, appHtml)
-        // .replace(`<!--app-store-->`, state)
+        .replace(`<!--app-store-->`, state)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
