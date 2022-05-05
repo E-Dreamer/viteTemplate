@@ -82,8 +82,3 @@ export function createApp() {
 
   return { app, router, store }
 }
-
-
-let arr = [1,2,3,4,5,6,7]
-
-arr.map(i=> i<5) 

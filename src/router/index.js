@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 10:46:23
- * @LastEditTime: 2022-03-29 11:08:59
+ * @LastEditTime: 2022-05-05 09:23:13
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -11,7 +11,8 @@ import {
   createRouter as _createRouter,
   createWebHistory,
 } from 'vue-router'
-import routes from './router'
+// import routes from './router'
+import routes from './moreRoute'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
