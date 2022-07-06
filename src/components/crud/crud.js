@@ -1,12 +1,12 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-06 16:11:22
+ * @LastEditTime: 2022-07-06 17:19:12
  * @LastEditors: E-Dreamer
  * @Description:
  */
 import { nextTick, reactive, isRef, toRefs, computed, onMounted } from 'vue'
-
+import { deepClone } from '@/utils/utils.js'
 import { ElMessage } from 'element-plus'
 // function mergeOptions(src, opts) {
 //   const optsRet = {
@@ -21,49 +21,49 @@ import { ElMessage } from 'element-plus'
 // }
 const HOOK = {
   /** 刷新 - 之前 */
-  beforeRefresh: true,
+  beforeRefresh: null,
   /** 刷新 - 之后 */
-  afterRefresh: true,
+  afterRefresh: null,
   /** 点击删除 - 之前 */
-  beforeClickDelete: true,
+  beforeClickDelete: null,
   /** 删除 - 之前 */
-  beforeDelete: true,
+  beforeDelete: null,
   /** 删除 - 之后 */
-  afterDelete: true,
+  afterDelete: null,
   /** 删除取消 - 之前 */
-  beforeDeleteCancel: true,
+  beforeDeleteCancel: null,
   /** 删除取消 - 之后 */
-  afterDeleteCancel: true,
+  afterDeleteCancel: null,
   /** 新建 - 之前 */
-  beforeToAdd: true,
+  beforeToAdd: null,
   /** 新建 - 之后 */
-  afterToAdd: true,
+  afterToAdd: null,
   /** 编辑 - 之前 */
-  beforeToEdit: true,
+  beforeToEdit: null,
   /** 编辑 - 之后 */
-  afterToEdit: true,
+  afterToEdit: null,
   /** 开始 "新建/编辑" - 之前 */
-  beforeToCU: true,
+  beforeToCU: null,
   /** 开始 "新建/编辑" - 之后 */
-  afterToCU: true,
+  afterToCU: null,
   /** "新建/编辑" 验证 - 之前 */
-  beforeValidateCU: true,
+  beforeValidateCU: null,
   /** "新建/编辑" 验证 - 之后 */
-  afterValidateCU: true,
+  afterValidateCU: null,
   /** 添加取消 - 之前 */
-  beforeAddCancel: true,
+  beforeAddCancel: null,
   /** 添加取消 - 之后 */
-  afterAddCancel: true,
+  afterAddCancel: null,
   /** 编辑取消 - 之前 */
-  beforeEditCancel: true,
+  beforeEditCancel: null,
   /** 编辑取消 - 之后 */
-  afterEditCancel: true,
+  afterEditCancel: null,
   /** 提交 - 之前 */
-  beforeSubmit: true,
+  beforeSubmit: null,
   /** 提交 - 之后 */
-  afterSubmit: true,
-  afterAddError: true,
-  afterEditError: true,
+  afterSubmit: null,
+  afterAddError: null,
+  afterEditError: null,
 }
 //信息
 const msg = {
@@ -110,7 +110,7 @@ function CRUD(tableProps) {
     // Form 表单
     form: {},
     // 重置表单
-    defaultForm: () => {},
+    defaultForm: {},
     // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
     sort: ['id,desc'],
     page: {
@@ -152,7 +152,7 @@ function CRUD(tableProps) {
   tableProps.defaultQuery = JSON.parse(JSON.stringify(tableProps.query))
 
   const state = reactive(tableProps)
-
+  state.defaultForm = deepClone(state.form)
   state.status = {
     add: STATUS.NORMAL,
     edit: STATUS.NORMAL,
@@ -198,11 +198,16 @@ export function useCrud(tableProps) {
     return isRef(res) ? res.value : res
   }
 
-  // hook 初始化时取不到
+  // // hook 初始化时取不到
   const findHook = (name) => {
-    return nextTick(() => {
-      return crud.HOOK[name]
-    })
+    if (isFn(crud.HOOK[name])) {
+      return crud.HOOK[name](crud, crud.form)
+    } else {
+      const fn = () => {
+        return true
+      }
+      return fn()
+    }
   }
 
   //是否是函数
@@ -263,8 +268,7 @@ export function useCrud(tableProps) {
    * @return {*}
    */
   crud.refresh = async () => {
-    const res = await findHook('beforeRefresh')
-    if (isFn(res) && !res(crud, crud.form)) {
+    if (!findHook('beforeRefresh')) {
       return
     }
     console.log(crud.getQueryParams())
@@ -351,19 +355,50 @@ export function useCrud(tableProps) {
    * @description: 新增
    * @return {*} 传递form的ref
    */
-  crud.toAdd = () => {}
+  crud.toAdd = async () => {
+    crud.resetForm()
+    if (!!findHook('beforeToAdd') && findHook('beforeToCU')) {
+      return
+    }
+    crud.status.add = STATUS.PREPARED
+    findHook('afterToAdd')
+    findHook('afterToCU')
+  }
 
   /**
    * @description: 重置表单
    * @return {*}
    */
-  crud.resetForm = () => {}
+  crud.resetForm = () => {
+    const form = crud.defaultForm
+    const crudFrom = crud.form
+    for (let key in form) {
+      // if (crudFrom.hasOwnProperty(key)) {
+      //   crudFrom[key] = form[key]
+      // }
+      crudFrom[key] = form[key]
+    }
+    //表单清空函数 resetFields
+  }
 
   /**
    * @description: 修改
    * @return {*}
    */
-  crud.toEdit = () => {}
+  crud.toEdit = async () => {
+    crud.resetForm()
+    if (!(findHook('beforeToAdd') && findHook('beforeToCU'))) {
+      return
+    }
+    crud.status.add = STATUS.PREPARED
+    findHook('afterToEdit')
+    findHook('afterToCU')
+  }
 
+  /**
+   * @description: 导出方法
+   * @return {*}
+   */
+  crud.doExport = () => {}
   return crud
 }

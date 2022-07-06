@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 10:51:39
- * @LastEditTime: 2022-03-30 16:34:22
+ * @LastEditTime: 2022-07-06 16:27:11
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -64,7 +64,22 @@ export const getAsyncData = (router, store, isServer) => {
     resolve()
   })
 }
-
+export function deepClone(source) {
+  if (typeof source !== 'object' || source == null) {
+    return source
+  }
+  const target = Array.isArray(source) ? [] : {}
+  for (const key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (typeof source[key] === 'object' && source[key] !== null) {
+        target[key] = deepClone(source[key])
+      } else {
+        target[key] = source[key]
+      }
+    }
+  }
+  return target
+}
 
 // 组件中的数据预取逻辑， /src/page/Home.vue 服务端数据预取，
 // export default {

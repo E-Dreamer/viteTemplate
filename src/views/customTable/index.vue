@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-06 16:08:57
+ * @LastEditTime: 2022-07-06 17:16:25
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -93,9 +93,10 @@ export default {
       crudMethod: { add, edit, del },
       form: state.form,
       query: { className: '啦啦啦' },
-      HOOK: {}
     })
-
+    crud.HOOK.beforeToAdd = (crud,form)=>{
+      return false;
+    }
 
 
     // state.crud.HOOK.beforeToEdit = (crud, form) => {
