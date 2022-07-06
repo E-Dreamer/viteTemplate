@@ -1,4 +1,4 @@
-import { defineComponent,reactive } from 'vue'
+import { defineComponent, reactive } from 'vue'
 export default defineComponent({
   props: {
     action: {
@@ -14,23 +14,25 @@ export default defineComponent({
       },
     },
   },
-  setup(props,context) {
+  setup(props, context) {
     const { action, searchInfo } = props
+
+    const componentProps = action?.componentProps
     const defaultRender = () => {
       return (
         <el-input
-          v-model={searchInfo[action.key]}
-          disabled={action.disabled}
-          placeholder={searchInfo[action.plac]}
+          v-model={searchInfo[action.field]}
+          clearable
+          {...componentProps}
         ></el-input>
       )
     }
-    const passwordRender = ()=>{
+    const passwordRender = () => {
       return (
         <el-input
           v-model={searchInfo[action.key]}
-          disabled={action.disabled}
-          placeholder={searchInfo[action.plac]}
+          clearable
+          {...componentProps}
           show-password
         ></el-input>
       )
@@ -39,10 +41,9 @@ export default defineComponent({
       return (
         <el-input
           v-model={searchInfo[action.key]}
-          rows={action.rows}
+          clearable
           type="textarea"
-          disabled={action.disabled}
-          placeholder={searchInfo[action.plac]}
+          {...componentProps}
         />
       )
     }
@@ -50,29 +51,26 @@ export default defineComponent({
       return (
         <el-input-number
           v-model={searchInfo[action.key]}
-          disabled={action.disabled}
-          style={{width:'100%'}}
+          style={{ width: '100%' }}
           min={action.min || 0}
-          max={action.max || 10000 }
-          controls-position='right'
-          onChange={numberChange}
-          placeholder={searchInfo[action.plac]}
+          max={action.max || 10000}
+          controls-position="right"
+          clearable
+          {...componentProps}
         />
       )
     }
-    const numberChange = (val)=>{
-      console.log('触发了？？',val);
+    const obj = {
+      numberRender,
+      textareaRender,
+      passwordRender,
+      defaultRender
     }
-    // const state = reactive({
-    //   defaultRender,
-    //   numberRender,
-    //   textareaRender,
-    // })
-    const render = ()=>{
-      const name =  action.subType ? `${action.subType}Render` : 'defaultRender'
-      return eval(name+'()')
-      // return state[name]()
+    const render = () => {
+      const name = action.subType ? `${action.subType}Render` : 'defaultRender'
+      // return eval(name + '()')
+      return obj[name]()
     }
-    return () => render()
+    return render
   },
 })

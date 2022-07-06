@@ -78,6 +78,7 @@ export function createApp() {
     .use(router)
     .use(store)
     .use(i18n)
+    .mount('#app')
 
   return { app, router, store }
 }

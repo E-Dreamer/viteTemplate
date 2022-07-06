@@ -35,6 +35,6 @@ export default defineComponent({
         </el-checkbox-group>
       )
     }
-    return () => render()
+    return render
   },
 })

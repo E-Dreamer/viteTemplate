@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-09 09:24:33
- * @LastEditTime: 2022-01-10 13:27:49
+ * @LastEditTime: 2022-07-05 13:38:01
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -41,7 +41,8 @@ export default {
 <style lang="less" scoped>
 .app-main {
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 84px);
+  // height: calc(100vh - 50px);
   width: 100%;
   position: relative;
   overflow: hidden;

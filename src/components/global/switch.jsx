@@ -33,6 +33,6 @@ export default defineComponent({
         </el-tooltip>
       )
     }
-    return ()=> render()
+    return render
   },
 })

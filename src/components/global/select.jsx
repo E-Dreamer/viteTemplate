@@ -73,6 +73,6 @@ export default defineComponent({
       )
     }
 
-    return () => render()
+    return render
   },
 })

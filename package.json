@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ssr": "node server",
-    "dev": "vite --mode build",
+    "dev":"vite",
+    "dev:build": "vite --mode build",
     "build": "npm run build:client && npm run build:server",
     "build:noExternal": "npm run build:client && npm run build:server:noExternal",
     "build:client": "vite build --ssrManifest --outDir dist/client",

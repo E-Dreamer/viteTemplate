@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-11-15 09:28:56
- * @LastEditTime: 2021-11-15 10:04:10
+ * @LastEditTime: 2022-07-04 14:39:47
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -66,4 +66,13 @@ export default {
       el.removeEventListener('click', el.handler)
     },
   },
+  auth:{
+    mounted(el,{value}){
+      const hasPermission = {}
+      if(!value) return;
+      if(!hasPermission(value)){
+        el.parentNode?.removeChild(el)
+      }
+    }
+  }
 }

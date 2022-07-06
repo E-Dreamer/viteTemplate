@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-10-27 10:23:44
- * @LastEditTime: 2021-10-27 13:32:11
+ * @LastEditTime: 2022-07-05 14:32:13
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -15,5 +15,4 @@ const modules = Object.keys(tem).reduce((modules,path) =>{
   // modules[name] = value;
   return modules
 },{})
-console.log(modules)
 export default modules

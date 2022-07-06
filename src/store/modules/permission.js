@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:23
- * @LastEditTime: 2022-03-16 16:17:32
+ * @LastEditTime: 2022-07-01 15:32:57
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -58,6 +58,16 @@ const permission = {
         component:()=>import('@/views/functionPostting/index.vue'),
         meta:{
           title:"函数式的封装",
+          icon:'el-icon-menu'
+        }
+      },
+      {
+        parentName:'Layout',
+        name:'customTable',
+        path:'/customTable',
+        component:()=>import('@/views/customTable/index.vue'),
+        meta:{
+          title:"自定义table组件",
           icon:'el-icon-menu'
         }
       }

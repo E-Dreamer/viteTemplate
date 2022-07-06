@@ -4,18 +4,20 @@
     <p>{{ count }}</p>
     <p>{{ text }}</p>
   </div>
+  <ceshiupload/>
 </template>
 
 
 <script>
-import { reactive, watch, toRefs } from 'vue'
+import { reactive, toRefs } from 'vue'
 import childTmp from './child.vue'
+import ceshiupload from './ceshiupload.jsx'
 export default {
-  components: { childTmp },
+  components: { childTmp,ceshiupload },
   setup () {
     const state = reactive({
       count: 0,
-      text: '',
+      text: '123123',
       arr:[
         {
           label:"asdsad",
@@ -28,14 +30,8 @@ export default {
       ]
     })
 
-    const getDom = ()=>{
-      return `<div>这是什么玩意</div>
-         <span>这是傻子呀</span>`
-    }
-    
     return {
       ...toRefs(state),
-      getDom
     }
   },
 }

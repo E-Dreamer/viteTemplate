@@ -19,7 +19,7 @@ export default defineComponent({
     const { action, searchInfo } = props
     const render = () => {
       return (
-        <el-radio-group v-model={searchInfo[action.key]}>
+        <el-radio-group v-model={searchInfo[action.key]} {...action.componentProps}>
           {action.options.map((item) => {
             return (
               <el-radio
@@ -33,6 +33,6 @@ export default defineComponent({
         </el-radio-group>
       )
     }
-    return () => render()
+    return render
   },
 })
