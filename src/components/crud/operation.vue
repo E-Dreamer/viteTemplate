@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, unref, nextTick } from 'vue'
+import { reactive, toRefs, unref, nextTick ,onMounted} from 'vue'
 export default {
   props: {
     crud: {
@@ -62,6 +62,7 @@ export default {
       // console.log(inject('tableRef'))
       // state.table = await crud.getTable()
       state.table = crud.table;
+      console.log('state.table: ', state.table);
       store = state.table?.store
       const array = unref(store?.states?._columns)
 

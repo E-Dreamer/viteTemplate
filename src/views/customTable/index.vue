@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-06 15:13:16
+ * @LastEditTime: 2022-07-06 16:08:57
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -20,8 +20,18 @@
     </template>
   </BasicCrud>
 
-  <el-form ref="getForm">
-
+  <el-form ref="getForm" :model="form" :rules="rules" label-width="120px" class="demo-ruleForm" status-icon>
+    <el-form-item label="Activity name" prop="name">
+      <el-input v-model="form.name" />
+    </el-form-item>
+    <el-form-item label="Activity zone" prop="age">
+      <el-select v-model="form.region" placeholder="Activity zone">
+        <el-option label="Zone one" value="shanghai" />
+        <el-option label="Zone two" value="beijing" />
+      </el-select>
+    </el-form-item>
+    <!-- <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
+    <el-button @click="resetForm(ruleFormRef)">Reset</el-button> -->
   </el-form>
 </template>
 
@@ -76,16 +86,17 @@ export default {
     const del = () => {
       console.log('删除接口')
     }
-    state.crud = useCrud({
+    const crud = useCrud({
       title: '这是标题',
       url: '/list',
       sort: 'id,desc',
       crudMethod: { add, edit, del },
       form: state.form,
       query: { className: '啦啦啦' },
-      HOOK: {},
-      getForm: () => { state.getForm }
+      HOOK: {}
     })
+
+
 
     // state.crud.HOOK.beforeToEdit = (crud, form) => {
     //   state.count++
@@ -131,7 +142,7 @@ export default {
     ]
     return {
       ...toRefs(state),
-      // crud,
+      crud,
       tableAttr,
       change,
       tableColumn

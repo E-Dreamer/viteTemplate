@@ -1,11 +1,11 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-06 15:04:00
+ * @LastEditTime: 2022-07-06 16:11:22
  * @LastEditors: E-Dreamer
  * @Description:
  */
-import { nextTick, reactive, isRef, toRefs, computed } from 'vue'
+import { nextTick, reactive, isRef, toRefs, computed, onMounted } from 'vue'
 
 import { ElMessage } from 'element-plus'
 // function mergeOptions(src, opts) {
@@ -145,7 +145,6 @@ function CRUD(tableProps) {
     table: null,
     searchToggle: true,
     NOTIFICATION_TYPE,
-    getForm:null
   }
   // tableProps = mergeOptions(defaultOptions, tableProps)
   tableProps = Object.assign(defaultOptions, tableProps)
@@ -192,6 +191,7 @@ function CRUD(tableProps) {
 export function useCrud(tableProps) {
   let crud = CRUD(tableProps)
   // 得到table ref
+  // 传递是 crud.currentTable = ()=>{return nextTick(()=>return ref)}
   const getTable = async () => {
     if (!crud.currentTable) return null
     let res = await crud.currentTable()
@@ -211,7 +211,7 @@ export function useCrud(tableProps) {
   }
 
   //通知
-  const notify = (message, type = crud.NOTIFICATION_TYPE.INFO) => {
+  crud.notify = (message, type = crud.NOTIFICATION_TYPE.INFO) => {
     ElMessage({
       message,
       type,
@@ -238,7 +238,7 @@ export function useCrud(tableProps) {
    * @description: 获取查询参数
    * @return {*}
    */
-  const getQueryParams = () => {
+  crud.getQueryParams = () => {
     Object.keys(crud.query).length !== 0 &&
       Object.keys(crud.query).forEach((item) => {
         if (crud.query[item] === null || crud.query[item] === '')
@@ -262,12 +262,12 @@ export function useCrud(tableProps) {
    * @description: 刷新
    * @return {*}
    */
-  const refresh = async () => {
+  crud.refresh = async () => {
     const res = await findHook('beforeRefresh')
     if (isFn(res) && !res(crud, crud.form)) {
       return
     }
-    console.log(getQueryParams())
+    console.log(crud.getQueryParams())
     crud.loading = true
     crud.data.push({
       id: crud.data.length + 1,
@@ -282,7 +282,7 @@ export function useCrud(tableProps) {
    * @param {*} flag 重置后进行查询操作
    * @return {*}
    */
-  const resetQuery = (flag = true) => {
+  crud.resetQuery = (flag = true) => {
     const defaultQuery = JSON.parse(JSON.stringify(crud.defaultQuery))
     const query = crud.query
     Object.keys(query).forEach((key) => {
@@ -291,16 +291,16 @@ export function useCrud(tableProps) {
     // 重置参数
     crud.params = {}
     if (flag) {
-      toQuery()
+      crud.toQuery()
     }
   }
   /**
    * @description: 查询
    * @return {*}
    */
-  const toQuery = () => {
+  crud.toQuery = () => {
     crud.page.page = 1
-    refresh()
+    crud.refresh()
   }
 
   //
@@ -309,11 +309,11 @@ export function useCrud(tableProps) {
    * @param {*} e 条数值
    * @return {*}
    */
-  const sizeChangeHandler = (e) => {
+  crud.sizeChangeHandler = (e) => {
     console.log('e: ', e)
     crud.page.size = e
     crud.page.page = 1
-    refresh()
+    crud.refresh()
   }
 
   /**
@@ -321,18 +321,20 @@ export function useCrud(tableProps) {
    * @param {*} e 页码值
    * @return {*}
    */
-  const pageChangeHandler = (e) => {
+  crud.pageChangeHandler = (e) => {
     crud.page.page = e
-    refresh()
+    crud.refresh()
   }
 
-  toQuery()
+  onMounted(() => {
+    crud.toQuery()
+  })
 
   /**
    * @description: 筛选栏显示隐藏
    * @return {*}
    */
-  const toggleChange = () => {
+  crud.toggleChange = () => {
     crud.searchToggle = !crud.searchToggle
   }
 
@@ -340,7 +342,7 @@ export function useCrud(tableProps) {
    * @description:table 勾选改变
    * @return {*} 勾选列表
    */
-  const selectionChange = (val) => {
+  crud.selectionChange = (val) => {
     crud.selections = val
     console.log('crud.selections: ', crud.selections)
   }
@@ -349,34 +351,19 @@ export function useCrud(tableProps) {
    * @description: 新增
    * @return {*} 传递form的ref
    */
-  const toAdd = () => {}
+  crud.toAdd = () => {}
 
   /**
    * @description: 重置表单
    * @return {*}
    */
-  const resetForm = () => {}
-
+  crud.resetForm = () => {}
 
   /**
-   * @description: 修改 
+   * @description: 修改
    * @return {*}
-   */  
-  const toEdit = ()=>{
+   */
+  crud.toEdit = () => {}
 
-  }
-
-
-  return {
-    ...toRefs(crud),
-    toQuery,
-    refresh,
-    notify,
-    getTable,
-    resetQuery,
-    sizeChangeHandler,
-    pageChangeHandler,
-    toggleChange,
-    selectionChange,
-  }
+  return crud
 }

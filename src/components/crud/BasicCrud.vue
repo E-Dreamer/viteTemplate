@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-06 15:00:03
+ * @LastEditTime: 2022-07-06 15:30:17
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -28,8 +28,9 @@
     <div class="table-container">
       <slot name="toolbar"></slot>
       <!-- fill -->
-      <el-table  ref="table" :data="crud.data" v-bind="tableAttr?.table" v-loading="crud.loading" @selection-change="crud.selectionChange">
-        <el-table-column type="selection" width="55" v-bind="tableAttr.selection"/>
+      <el-table ref="table" :data="crud.data" v-bind="tableAttr?.table" v-loading="crud.loading"
+        @selection-change="crud.selectionChange">
+        <el-table-column type="selection" width="55" v-bind="tableAttr.selection" />
         <el-table-column v-for="el in tableColumn" v-bind="el?.columnProps" :key="el.prop" :prop="el.prop"
           :label="el.label">
           <template #default="{ row, column, $index }" v-if="el.slotProps">
@@ -91,10 +92,9 @@ export default {
     const state = reactive({
       table: null
     })
-
+   
     onMounted(() => {
-      // provide('tableRef', state.table)
-      props.crud.table = state.table
+       props.crud.table = state.table
       // const dom = document.getElementsByClassName('el-pagination__total')
       // if (dom && dom.length) {
       //   console.log('进来？？')
