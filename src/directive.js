@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-11-15 09:28:56
- * @LastEditTime: 2022-07-04 14:39:47
+ * @LastEditTime: 2022-07-07 10:33:37
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -57,7 +57,7 @@ export default {
     beforeUpdate() {},
     // 在包含组件的 VNode 及其子组件的 VNode 更新之后调用
     updated(el, { value }) {
-      el.$value= value;
+      el.$value = value
     },
     // 在绑定元素的父组件卸载之前调用
     beforeUnmount() {},
@@ -66,13 +66,30 @@ export default {
       el.removeEventListener('click', el.handler)
     },
   },
-  auth:{
-    mounted(el,{value}){
-      const hasPermission = {}
-      if(!value) return;
-      if(!hasPermission(value)){
-        el.parentNode?.removeChild(el)
+  auth: {
+    mounted(el, { value }) {
+      const hasPermission = [
+        'courseVideo:add',
+        'courseVideo:edit',
+        'courseVideo:del',
+        'courseVideo:download',
+      ]
+      if (!value) {
+        // 未传递直接移除
+        return el.parentNode?.removeChild(el)
       }
-    }
-  }
+      if (value && Array.isArray(value)) {
+        if (value.length) {
+          const result = hasPermission.some((role) => {
+            return value.includes(role)
+          })
+          if (!result) {
+            el.parentNode?.removeChild(el)
+          }
+        }
+      } else {
+        throw new Error(`使用方式： v-auth="['admin','editor']"`)
+      }
+    },
+  },
 }

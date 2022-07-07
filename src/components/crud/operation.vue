@@ -3,20 +3,22 @@
     <span class="crud-opts-left">
       <!--左侧插槽-->
       <slot name="left" />
-      <el-button v-if="crud.optShow.add" class="filter-item" size="small" type="primary" icon="el-icon-plus"
-        @click="crud.toAdd">
+      <el-button v-if="crud.optShow.add" v-auth="auth.add" class="filter-item" size="small" type="primary"
+        icon="el-icon-plus" @click="crud.toAdd">
         新增
       </el-button>
-      <el-button v-if="crud.optShow.edit" class="filter-item" size="small" type="success" icon="el-icon-edit"
-        :disabled="crud.selections.length !== 1" @click="crud.toEdit(crud.selections[0])">
+      <el-button v-if="crud.optShow.edit" v-auth="auth.edit" class="filter-item" size="small" type="success"
+        icon="el-icon-edit" :disabled="crud.selections.length !== 1" @click="crud.toEdit(crud.selections[0])">
         修改
       </el-button>
-      <el-button v-if="crud.optShow.del" class="filter-item" type="danger" icon="el-icon-delete" size="small"
-        :loading="crud.delAllLoading" :disabled="crud.selections.length === 0" @click="toDelete(crud.selections)">
+      <el-button v-if="crud.optShow.del" v-auth="auth.del" class="filter-item" type="danger" icon="el-icon-delete"
+        size="small" :loading="crud.delAllLoading" :disabled="crud.selections.length === 0"
+        @click="toDelete(crud.selections)">
         删除
       </el-button>
-      <el-button v-if="crud.optShow.download" :loading="crud.downloadLoading" :disabled="!crud.data.length"
-        class="filter-item" size="small" type="warning" icon="el-icon-download" @click="crud.doExport">导出</el-button>
+      <el-button v-if="crud.optShow.download" v-auth="auth.download" :loading="crud.downloadLoading"
+        :disabled="!crud.data.length" class="filter-item" size="small" type="warning" icon="el-icon-download"
+        @click="crud.doExport">导出</el-button>
       <!--右侧-->
       <slot name="right" />
     </span>
@@ -41,12 +43,16 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, unref, nextTick ,onMounted} from 'vue'
+import { reactive, toRefs, unref, nextTick, onMounted } from 'vue'
 export default {
   props: {
     crud: {
       type: Object,
       default: () => { return {} }
+    },
+    auth: {
+      type: Object,
+      required: true
     }
   },
   setup (props) {
@@ -61,8 +67,7 @@ export default {
     nextTick(async () => {
       // console.log(inject('tableRef'))
       // state.table = await crud.getTable()
-      state.table = crud.table;
-      console.log('state.table: ', state.table);
+      state.table = crud.tableRef;
       store = state.table?.store
       const array = unref(store?.states?._columns)
 

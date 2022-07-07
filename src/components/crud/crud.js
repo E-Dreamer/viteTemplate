@@ -1,11 +1,11 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-06 17:19:12
+ * @LastEditTime: 2022-07-07 11:08:10
  * @LastEditors: E-Dreamer
  * @Description:
  */
-import { nextTick, reactive, isRef, toRefs, computed, onMounted } from 'vue'
+import { reactive, isRef, onMounted, computed, unref } from 'vue'
 import { deepClone } from '@/utils/utils.js'
 import { ElMessage } from 'element-plus'
 // function mergeOptions(src, opts) {
@@ -134,6 +134,8 @@ function CRUD(tableProps) {
       edit: (form) => {},
       get: (id) => {},
     },
+    //按钮权限
+    auth: null,
     optShow: {
       add: true,
       edit: true,
@@ -142,7 +144,8 @@ function CRUD(tableProps) {
       reset: true,
     },
     HOOK,
-    table: null,
+    tableRef: null,
+    formRef: null,
     searchToggle: true,
     NOTIFICATION_TYPE,
   }
@@ -157,7 +160,7 @@ function CRUD(tableProps) {
     add: STATUS.NORMAL,
     edit: STATUS.NORMAL,
     // 添加或编辑状态
-    get cu() {
+    cu: computed(() => {
       if (
         state.status.add === STATUS.NORMAL &&
         state.status.edit === STATUS.NORMAL
@@ -175,21 +178,31 @@ function CRUD(tableProps) {
         return STATUS.PROCESSING
       }
       throw new Error("wrong crud's cu status")
-    },
+    }),
     // 标题
-    get title() {
+    title: computed(() => {
       return state.status.add > STATUS.NORMAL
         ? `新增${state.title}`
         : state.status.edit > STATUS.NORMAL
         ? `编辑${state.title}`
         : state.title
-    },
+    }),
+    dialog: computed({
+      get: () => {
+        return state.status.cu > 0
+      },
+      set: (val) => {
+        // console.log(val)
+        return true
+      },
+    }),
   }
   return state
 }
 
 export function useCrud(tableProps) {
   let crud = CRUD(tableProps)
+  console.log('crud: ', crud)
   // 得到table ref
   // 传递是 crud.currentTable = ()=>{return nextTick(()=>return ref)}
   const getTable = async () => {
@@ -314,7 +327,6 @@ export function useCrud(tableProps) {
    * @return {*}
    */
   crud.sizeChangeHandler = (e) => {
-    console.log('e: ', e)
     crud.page.size = e
     crud.page.page = 1
     crud.refresh()
@@ -357,7 +369,7 @@ export function useCrud(tableProps) {
    */
   crud.toAdd = async () => {
     crud.resetForm()
-    if (!!findHook('beforeToAdd') && findHook('beforeToCU')) {
+    if (!findHook('beforeToAdd') && findHook('beforeToCU')) {
       return
     }
     crud.status.add = STATUS.PREPARED
@@ -379,6 +391,9 @@ export function useCrud(tableProps) {
       crudFrom[key] = form[key]
     }
     //表单清空函数 resetFields
+    if (crud.formRef()) {
+      crud.formRef().clearValidate()
+    }
   }
 
   /**
@@ -390,11 +405,76 @@ export function useCrud(tableProps) {
     if (!(findHook('beforeToAdd') && findHook('beforeToCU'))) {
       return
     }
-    crud.status.add = STATUS.PREPARED
+    crud.status.edit = STATUS.PREPARED
     findHook('afterToEdit')
     findHook('afterToCU')
   }
 
+  /**
+   * @description: 取消 新增/编辑
+   * @return {*}
+   */
+  crud.cancelCU = async () => {
+    const addStatus = crud.status.add
+    const editStatus = crud.status.edit
+    if (addStatus === STATUS.PREPARED) {
+      if (!findHook('beforeAddCancel')) {
+        return
+      }
+      crud.status.add = STATUS.NORMAL
+    }
+    if (editStatus === STATUS.PREPARED) {
+      if (!findHook('beforeEditCancel')) {
+        return
+      }
+      crud.status.edit = STATUS.NORMAL
+      // crud.getDataStatus(crud.getDataId(crud.form)).edit = STATUS.NORMAL
+    }
+    crud.resetForm()
+    if (addStatus === STATUS.PREPARED) {
+      findHook('afterAddCancel')
+    }
+    if (editStatus === STATUS.PREPARED) {
+      findHook('afterEditCancel')
+    }
+    // 清除表单验证
+    if (crud.formRef()) {
+      crud.formRef().clearValidate()
+    }
+  }
+
+  /**
+   * @description: 删除
+   * @param {*} data 需要删除的项
+   * @return {*}
+   */
+  crud.toDelete = async (data) => {}
+
+  /**
+   * @description: 
+   * @param {*} data
+   * @return {*}
+   */  
+  crud.doDelete = async(data)=>{
+
+  }
+  /**
+   * @description: 
+   * @param {*} data
+   * @return {*}
+   */  
+  crud.cancelDelete = async(data)=>{
+
+  }
+
+  /**
+   * @description: 
+   * @param {*} data
+   * @return {*}
+   */  
+  crud.beforeClickDelete = async(data)=>{
+
+  }
   /**
    * @description: 导出方法
    * @return {*}

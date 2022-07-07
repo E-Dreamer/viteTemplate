@@ -10,6 +10,7 @@ import { createRouter } from '@/router'
 import { createStore } from '@/store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import Cookies from 'js-cookie'
 import i18n from '@/locales'
 // svg
@@ -74,7 +75,7 @@ export function createApp() {
   })
   app.config.globalProperties.$ELEMENT = ElementPlus
   app
-    .use(ElementPlus, { size: Cookies.get('size') || 'medium' })
+    .use(ElementPlus, { size: Cookies.get('size') || 'medium' , locale: zhCn,})
     .use(router)
     .use(store)
     .use(i18n)

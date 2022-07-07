@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-06 15:30:17
+ * @LastEditTime: 2022-07-07 10:58:57
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -38,8 +38,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="130" prop="operation" v-bind="tableAttr?.operation || {}">
-          <!-- <RROperation :crud='crud' /> -->
+        <el-table-column label="操作" width="120" prop="operation" v-bind="tableAttr?.operation || {}">
+          <template #default="scope">
+            <slot name="operation" :scope="scope"></slot>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -56,9 +58,9 @@
 <script>
 import { toRefs, reactive, onMounted, onActivated } from 'vue'
 import action from '@/components/global/index.js'
-import RROperation from './RR.operation.vue'
+
 export default {
-  components: { ...action, RROperation },
+  components: { ...action },
   props: {
     crud: {
       type: Object,
@@ -92,9 +94,9 @@ export default {
     const state = reactive({
       table: null
     })
-   
+
     onMounted(() => {
-       props.crud.table = state.table
+      props.crud.tableRef = state.table
       // const dom = document.getElementsByClassName('el-pagination__total')
       // if (dom && dom.length) {
       //   console.log('进来？？')
