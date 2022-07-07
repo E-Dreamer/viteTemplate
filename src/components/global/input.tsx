@@ -1,14 +1,37 @@
-import { defineComponent, reactive } from 'vue'
+import { Component, defineComponent, PropType } from 'vue'
+import { SearchInfo, Action } from './types/action'
+interface InputAction extends Action {
+  componentProps?: {
+    maxlength?: string | number;
+    minlength?: number;
+    showWordLimit?: boolean;
+    placeholder?: string;
+    clearable?: boolean;
+    formatter?: () => void;
+    parser?: () => void;
+    disabled?: boolean;
+    size?: 'large' | 'small' | 'default';
+    prefixIcon?: string | Component;
+    suffixIcon?: string | Component;
+    autosize: boolean | {
+      minRows?: number;
+      maxRows?: number;
+    };
+    readonly: boolean;
+    inputStyle: Record<string, any>
+  },
+  subType?: 'password' | 'textarea' | 'number'
+}
 export default defineComponent({
   props: {
     action: {
-      type: Object,
+      type: Object as PropType<InputAction>,
       default: () => {
         return {}
       },
     },
     searchInfo: {
-      type: Object,
+      type: Object as PropType<SearchInfo>,
       default: () => {
         return {}
       },
@@ -30,7 +53,7 @@ export default defineComponent({
     const passwordRender = () => {
       return (
         <el-input
-          v-model={searchInfo[action.key]}
+          v-model={searchInfo[action.field]}
           clearable
           {...componentProps}
           show-password
@@ -40,7 +63,7 @@ export default defineComponent({
     const textareaRender = () => {
       return (
         <el-input
-          v-model={searchInfo[action.key]}
+          v-model={searchInfo[action.field]}
           clearable
           type="textarea"
           {...componentProps}
@@ -50,12 +73,9 @@ export default defineComponent({
     const numberRender = () => {
       return (
         <el-input-number
-          v-model={searchInfo[action.key]}
-          style={{ width: '100%' }}
-          min={action.min || 0}
-          max={action.max || 10000}
-          controls-position="right"
+          v-model={searchInfo[action.field]}
           clearable
+          min={componentProps?.min || 0}
           {...componentProps}
         />
       )

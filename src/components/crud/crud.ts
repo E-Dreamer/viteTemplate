@@ -1,14 +1,19 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-07 11:08:10
+ * @LastEditTime: 2022-07-07 16:58:53
  * @LastEditors: E-Dreamer
  * @Description:
  */
-import { reactive, isRef, onMounted, computed, unref } from 'vue'
+import { reactive, isRef, onMounted, computed } from 'vue'
 import { deepClone } from '@/utils/utils.js'
 import { ElMessage } from 'element-plus'
-// function mergeOptions(src, opts) {
+import {
+  CrudProps,
+  NOTIFICATION_TYPE_PROPS,
+  HookProps,
+} from './types/crudProps'
+// function mergeOptions(src: object, opts: object): CrudProps {
 //   const optsRet = {
 //     ...src,
 //   }
@@ -19,7 +24,7 @@ import { ElMessage } from 'element-plus'
 //   }
 //   return optsRet
 // }
-const HOOK = {
+const HOOK: HookProps = {
   /** 刷新 - 之前 */
   beforeRefresh: null,
   /** 刷新 - 之后 */
@@ -79,39 +84,30 @@ const STATUS = {
   PROCESSING: 2,
 }
 // 通知类型
-const NOTIFICATION_TYPE = {
+const NOTIFICATION_TYPE: NOTIFICATION_TYPE_PROPS = {
   SUCCESS: 'success',
   WARNING: 'warning',
   INFO: 'info',
   ERROR: 'error',
 }
+
 /**
  * @description: CRUD配置
  * @param {*} tableProps
  * @return {*}crud instance.
  */
-function CRUD(tableProps) {
+function CRUD(tableProps: CrudProps) {
   //默认参数
-  const defaultOptions = {
-    // id字段名
+  const defaultOptions: CrudProps = {
     idField: 'id',
-    // 标题
     title: '',
-    // 请求数据的url
     url: '',
-    // 表格数据
     data: [],
-    // 选择项
     selections: [],
-    // 待查询的对象
     query: {},
-    // 查询数据的参数
     params: {},
-    // Form 表单
     form: {},
-    // 重置表单
     defaultForm: {},
-    // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
     sort: ['id,desc'],
     page: {
       // 页码
@@ -134,8 +130,6 @@ function CRUD(tableProps) {
       edit: (form) => {},
       get: (id) => {},
     },
-    //按钮权限
-    auth: null,
     optShow: {
       add: true,
       edit: true,
@@ -212,7 +206,7 @@ export function useCrud(tableProps) {
   }
 
   // // hook 初始化时取不到
-  const findHook = (name) => {
+  const findHook = (name:string) => {
     if (isFn(crud.HOOK[name])) {
       return crud.HOOK[name](crud, crud.form)
     } else {
@@ -240,16 +234,16 @@ export function useCrud(tableProps) {
    * 通用的提示
    */
   const submitSuccessNotify = () => {
-    notify(msg.submit, crud.NOTIFICATION_TYPE.SUCCESS)
+    crud.notify(msg.submit, crud.NOTIFICATION_TYPE.SUCCESS)
   }
   const addSuccessNotify = () => {
-    notify(msg.add, crud.NOTIFICATION_TYPE.SUCCESS)
+    crud.notify(msg.add, crud.NOTIFICATION_TYPE.SUCCESS)
   }
   const editSuccessNotify = () => {
-    notify(msg.edit, crud.NOTIFICATION_TYPE.SUCCESS)
+    crud.notify(msg.edit, crud.NOTIFICATION_TYPE.SUCCESS)
   }
   const delSuccessNotify = () => {
-    notify(msg.del, crud.NOTIFICATION_TYPE.SUCCESS)
+    crud.notify(msg.del, crud.NOTIFICATION_TYPE.SUCCESS)
   }
 
   /**
@@ -451,30 +445,24 @@ export function useCrud(tableProps) {
   crud.toDelete = async (data) => {}
 
   /**
-   * @description: 
-   * @param {*} data
+   * @description:
+   * @param {*} data 需要删除的项
    * @return {*}
-   */  
-  crud.doDelete = async(data)=>{
-
-  }
+   */
+  crud.doDelete = async (data) => {}
   /**
-   * @description: 
-   * @param {*} data
+   * @description: 取消删除
+   * @param {*} data 需要删除的项
    * @return {*}
-   */  
-  crud.cancelDelete = async(data)=>{
-
-  }
+   */
+  crud.cancelDelete = async (data) => {}
 
   /**
-   * @description: 
+   * @description: 删除之前的操作
    * @param {*} data
    * @return {*}
-   */  
-  crud.beforeClickDelete = async(data)=>{
-
-  }
+   */
+  crud.beforeClickDelete = async (data) => {}
   /**
    * @description: 导出方法
    * @return {*}

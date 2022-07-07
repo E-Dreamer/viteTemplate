@@ -1,44 +1,46 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-07 11:06:01
+ * @LastEditTime: 2022-07-07 17:02:51
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
-  <BasicCrud :crud="crud" :searchForm="searchForm" :tableAttr="tableAttr" :tableColumn="tableColumn">
-    <!-- 自定义插槽 -->
-    <template #name="{ query }">
-      <el-rate v-model="query.rate" />
-    </template>
-    <template #address="{ scope }">
-      {{ scope.row.address }}
-    </template>
-    <!-- 菜单栏 -->
-    <template #toolbar>
-      <CrudOperation :crud="crud" :auth="auth"></CrudOperation>
-    </template>
-    <!-- 操作栏 -->
-    <template #operation="scope">
-      <RROperation :crud="crud" :scope="scope.row" :auth="auth"></RROperation>
-    </template>
-  </BasicCrud>
-  <el-dialog ref="dialog" :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.dialog"
-    :title="crud.status.title" width="700px">
-    <el-form ref="getForm" :model="form" :rules="rules" label-width="120px" class="demo-ruleForm" status-icon>
-      <el-form-item label="Activity name" prop="name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="Activity zone" prop="age">
-        <el-select v-model="form.age" placeholder="Activity zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-    </el-form>
-    <!-- <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
+  <div>
+    <BasicCrud :crud="crud" :searchForm="searchForm" :tableAttr="tableAttr" :tableColumn="tableColumn">
+      <!-- 自定义插槽 -->
+      <template #name="{ query }">
+        <el-rate v-model="query.rate" />
+      </template>
+      <template #address="{ scope }">
+        {{ scope.row.address }}
+      </template>
+      <!-- 菜单栏 -->
+      <template #toolbar>
+        <CrudOperation :crud="crud" :auth="auth"></CrudOperation>
+      </template>
+      <!-- 操作栏 -->
+      <template #operation="scope">
+        <RROperation :crud="crud" :scope="scope.row" :auth="auth"></RROperation>
+      </template>
+    </BasicCrud>
+    <el-dialog ref="dialog" :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.dialog"
+      :title="crud.status.title" width="700px">
+      <el-form ref="getForm" :model="form" :rules="rules" label-width="120px" class="demo-ruleForm" status-icon>
+        <el-form-item label="Activity name" prop="name">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="Activity zone" prop="age">
+          <el-select v-model="form.age" placeholder="Activity zone">
+            <el-option label="Zone one" value="shanghai" />
+            <el-option label="Zone two" value="beijing" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <!-- <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
     <el-button @click="resetForm(ruleFormRef)">Reset</el-button> -->
-  </el-dialog>
+    </el-dialog>
+  </div>
 
 
 </template>
@@ -46,7 +48,7 @@
 <script>
 import { reactive, toRefs } from 'vue'
 //crudOperation
-import { useCrud, BasicCrud, CrudOperation, RROperation } from '@/components/crud/index.js'
+import { useCrud, BasicCrud, CrudOperation, RROperation } from '@/components/crud/index'
 
 export default {
   components: { BasicCrud, CrudOperation, RROperation },
@@ -181,6 +183,9 @@ export default {
         label: '地址',
         prop: 'address',
         slotProps: true
+      },
+      {
+        label:'啦啦啦'
       }
     ]
 

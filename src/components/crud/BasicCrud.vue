@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-07 10:58:57
+ * @LastEditTime: 2022-07-07 16:55:51
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -55,42 +55,47 @@
   </div>
 </template>
 
-<script>
-import { toRefs, reactive, onMounted, onActivated } from 'vue'
-import action from '@/components/global/index.js'
-
+<script lang="ts">
+import { toRefs, reactive, onMounted, onActivated, PropType } from 'vue'
+import action from '@/components/global/index'
+import { CrudProps } from './types/crudProps'
+import { Action } from '../global/types/action'
+import { tableAttr, tableColumn } from './types/tableAttr'
+interface searchForm extends Action {
+  [key: string]: any
+}
 export default {
   components: { ...action },
   props: {
     crud: {
-      type: Object,
+      type: Object as PropType<CrudProps>,
       default: () => {
         return {}
       },
       require: true,
     },
     searchForm: {
-      type: Array,
+      type: Array as PropType<searchForm[]>,
       default: () => {
         return []
       },
       require: true,
     },
     tableAttr: {
-      type: Object,
+      type: Object as PropType<tableAttr>,
       default: () => {
         return {}
       },
     },
     tableColumn: {
-      type: Array,
+      type: Array as PropType<tableColumn[]>,
       default: () => {
         return []
       },
       require: true,
     }
   },
-  setup (props) {
+  setup(props) {
     const state = reactive({
       table: null
     })

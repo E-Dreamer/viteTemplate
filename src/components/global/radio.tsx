@@ -1,15 +1,20 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { SearchInfo, Action } from './types/action'
 
+interface radioProps extends Action {
+  componentProps?:object,
+  optionsProps?:object
+}
 export default defineComponent({
   props: {
     action: {
-      type: Object,
+      type: Object as PropType<radioProps>,
       default: () => {
         return {}
       },
     },
     searchInfo: {
-      type: Object,
+      type: Object as PropType<SearchInfo>,
       default: () => {
         return {}
       },
@@ -17,9 +22,11 @@ export default defineComponent({
   },
   setup(props) {
     const { action, searchInfo } = props
+    
+    const componentProps = action?.componentProps
     const render = () => {
       return (
-        <el-radio-group v-model={searchInfo[action.key]} {...action.componentProps}>
+        <el-radio-group v-model={searchInfo[action.key]} {...componentProps}>
           {action.options.map((item) => {
             return (
               <el-radio

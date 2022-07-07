@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-07 11:08:39
+ * @LastEditTime: 2022-07-07 16:49:18
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -13,8 +13,10 @@
       <template v-if="btnType === 'text'">编辑</template>
     </el-button>
     <slot />
-    <el-popover v-model:visible="pop" v-auth="auth.del" placement="top" width="180" trigger="click" @show="onPopoverShow"
-      @hide="onPopoverHide">
+    <!-- -->
+    <!-- :loading="crud.dataStatus[crud.getDataId(data)] && crud.dataStatus[crud.getDataId(data)].delete === 2" -->
+    <el-popover v-model:visible="pop" v-auth="auth.del" placement="top" width="180" trigger="click"
+      @show="onPopoverShow" @hide="onPopoverHide">
       <template #reference>
         <el-button v-if="crud.optShow.del" :class="[btnType && 'danger-text-btn']" :disabled="disabledDle"
           :type="btnType || 'danger'" icon="el-icon-delete" size="small" @click="toDelete">
@@ -23,7 +25,7 @@
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
         <el-button size="small" type="text" @click="doCancel">取消</el-button>
-        <!-- :loading="crud.dataStatus[crud.getDataId(data)] && crud.dataStatus[crud.getDataId(data)].delete === 2" -->
+
         <el-button type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
       </div>
     </el-popover>
@@ -31,13 +33,19 @@
   </div>
 </template>
 
-<script>
-import { toRefs, reactive } from 'vue'
+<script lang="ts">
+import { MessageType } from 'element-plus';
+import { toRefs, reactive, PropType } from 'vue'
+import { CrudProps, AuthProps } from './types/crudProps';
 export default {
   props: {
     crud: {
-      type: Object,
+      type: Object as PropType<CrudProps>,
       default: () => { return {} }
+    },
+    auth: {
+      type: Object as PropType<AuthProps>,
+      required: true
     },
     // 当前行数据
     data: {
@@ -56,20 +64,16 @@ export default {
     },
     //按钮类型
     btnType: {
-      type: String,
+      type: String as PropType<MessageType>,
       default: ''
     },
     // 弹出消息内容
     msg: {
       type: String,
       default: '确定删除本条数据吗？'
-    },
-    auth: {
-      type: Object,
-      required: true
     }
   },
-  setup (props) {
+  setup(props) {
     const crud = props.crud
     const state = reactive({
       pop: false

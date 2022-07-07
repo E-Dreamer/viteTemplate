@@ -1,15 +1,23 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 // 还有Select V2 虚拟列表选择器 但是在测试中 不在实际场景中使用
+import { SearchInfo, Action } from './types/action'
+
+interface selectProps extends Action {
+  componentProps?: object,
+  optionsProps?: object,
+  group?: Array<any>,
+  labelFilter?: (item: object) => void;
+}
 export default defineComponent({
   props: {
     action: {
-      type: Object,
+      type: Object as PropType<selectProps>,
       default: () => {
         return {}
       },
     },
     searchInfo: {
-      type: Object,
+      type: Object as PropType<SearchInfo>,
       default: () => {
         return {}
       },
@@ -17,8 +25,9 @@ export default defineComponent({
   },
   setup(props) {
     const { action, searchInfo } = props
-    const labelRender = (item)=>{
-      if(action.labelFilter){
+    const componentProps = action?.componentProps
+    const labelRender = (item) => {
+      if (action.labelFilter) {
         return action.labelFilter(item)
       }
       return item.label
@@ -48,23 +57,9 @@ export default defineComponent({
       return (
         <el-select
           style={{ width: '100%' }}
-          filterable
           clearable
-          multiple={action.multiple || false}
-          disabled={action.disabled || false}
-          v-model={searchInfo[action.key]}
-          placeholder={searchInfo[action.plac]}
-          loading={action.loading || false}
-          filter-method={
-            action.filter
-              ? (val) => action.filter(val, action.group || action.options)
-              : null
-          }
-          remote-method={
-            action.remote
-              ? (val) => action.remote(val, action.group || action.options)
-              : null
-          }
+          v-model={searchInfo[action.field]}
+          {...componentProps}
         >
           {action.group
             ? groupRender(action.group)

@@ -42,16 +42,17 @@
     </el-button-group>
   </div>
 </template>
-<script>
-import { reactive, toRefs, unref, nextTick, onMounted } from 'vue'
+<script lang="ts">
+import { reactive, toRefs, unref, nextTick, PropType } from 'vue'
+import { CrudProps,AuthProps } from './types/crudProps';
 export default {
   props: {
     crud: {
-      type: Object,
+      type: Object as PropType<CrudProps>,
       default: () => { return {} }
     },
     auth: {
-      type: Object,
+      type: Object as PropType<AuthProps>,
       required: true
     }
   },
