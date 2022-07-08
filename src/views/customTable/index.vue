@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-07 17:02:51
+ * @LastEditTime: 2022-07-08 09:24:41
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -45,7 +45,7 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import { reactive, toRefs } from 'vue'
 //crudOperation
 import { useCrud, BasicCrud, CrudOperation, RROperation } from '@/components/crud/index'

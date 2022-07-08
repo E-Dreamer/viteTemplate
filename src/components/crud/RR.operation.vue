@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-07 16:49:18
+ * @LastEditTime: 2022-07-08 09:45:12
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -76,7 +76,7 @@ export default {
   setup(props) {
     const crud = props.crud
     const state = reactive({
-      pop: false
+      pop: false as boolean
     })
     const handleDocumentClick = () => {
       state.pop = false;

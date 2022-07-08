@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
     "jsx": "preserve",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    // 严格模式
+    "strict": true,
+    // "strictFunctionTypes":false
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

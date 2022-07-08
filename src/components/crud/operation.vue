@@ -44,7 +44,14 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, unref, nextTick, PropType } from 'vue'
-import { CrudProps,AuthProps } from './types/crudProps';
+import { CrudProps, AuthProps,ELTableInstance } from './types/crudProps';
+type ColumnsObj = { show: boolean, [key: string]: any }
+interface State {
+  allColumnsSelected: boolean
+  allColumnsSelectedIndeterminate: boolean
+  storeColumns: ColumnsObj[],
+  table: ELTableInstance | null | undefined
+}
 export default {
   props: {
     crud: {
@@ -56,15 +63,15 @@ export default {
       required: true
     }
   },
-  setup (props) {
+  setup(props) {
     const crud = props.crud;
-    const state = reactive({
+    const state = reactive<State>({
       allColumnsSelected: true,
       allColumnsSelectedIndeterminate: false,
       storeColumns: [],
       table: null
     })
-    let store
+    let store: any
     nextTick(async () => {
       // console.log(inject('tableRef'))
       // state.table = await crud.getTable()
@@ -85,7 +92,7 @@ export default {
     })
 
 
-    const handleCheckAllChange = (value) => {
+    const handleCheckAllChange = (value: boolean) => {
       if (!value) {
         state.allColumnsSelected = true;
         return;
@@ -100,7 +107,7 @@ export default {
       state.allColumnsSelectedIndeterminate = false;
     }
 
-    const handleCheckedTableColumnsChange = (item) => {
+    const handleCheckedTableColumnsChange = (item: ColumnsObj) => {
       let totalCount = 0
       let selectedCount = 0
       state.storeColumns.forEach(item => {
@@ -120,7 +127,7 @@ export default {
     }
 
 
-    const changeColumns = (item) => {
+    const changeColumns = (item: ColumnsObj) => {
       if (!item.show) {
         store.commit('removeColumn', item, null)
         store.updateColumns();

@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-07 16:58:53
+ * @LastEditTime: 2022-07-08 09:53:29
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -26,49 +26,49 @@ import {
 // }
 const HOOK: HookProps = {
   /** 刷新 - 之前 */
-  beforeRefresh: null,
+  beforeRefresh: undefined,
   /** 刷新 - 之后 */
-  afterRefresh: null,
+  afterRefresh: undefined,
   /** 点击删除 - 之前 */
-  beforeClickDelete: null,
+  beforeClickDelete: undefined,
   /** 删除 - 之前 */
-  beforeDelete: null,
+  beforeDelete: undefined,
   /** 删除 - 之后 */
-  afterDelete: null,
+  afterDelete: undefined,
   /** 删除取消 - 之前 */
-  beforeDeleteCancel: null,
+  beforeDeleteCancel: undefined,
   /** 删除取消 - 之后 */
-  afterDeleteCancel: null,
+  afterDeleteCancel: undefined,
   /** 新建 - 之前 */
-  beforeToAdd: null,
+  beforeToAdd: undefined,
   /** 新建 - 之后 */
-  afterToAdd: null,
+  afterToAdd: undefined,
   /** 编辑 - 之前 */
-  beforeToEdit: null,
+  beforeToEdit: undefined,
   /** 编辑 - 之后 */
-  afterToEdit: null,
+  afterToEdit: undefined,
   /** 开始 "新建/编辑" - 之前 */
-  beforeToCU: null,
+  beforeToCU: undefined,
   /** 开始 "新建/编辑" - 之后 */
-  afterToCU: null,
+  afterToCU: undefined,
   /** "新建/编辑" 验证 - 之前 */
-  beforeValidateCU: null,
+  beforeValidateCU: undefined,
   /** "新建/编辑" 验证 - 之后 */
-  afterValidateCU: null,
+  afterValidateCU: undefined,
   /** 添加取消 - 之前 */
-  beforeAddCancel: null,
+  beforeAddCancel: undefined,
   /** 添加取消 - 之后 */
-  afterAddCancel: null,
+  afterAddCancel: undefined,
   /** 编辑取消 - 之前 */
-  beforeEditCancel: null,
+  beforeEditCancel: undefined,
   /** 编辑取消 - 之后 */
-  afterEditCancel: null,
+  afterEditCancel: undefined,
   /** 提交 - 之前 */
-  beforeSubmit: null,
+  beforeSubmit: undefined,
   /** 提交 - 之后 */
-  afterSubmit: null,
-  afterAddError: null,
-  afterEditError: null,
+  afterSubmit: undefined,
+  afterAddError: undefined,
+  afterEditError: undefined,
 }
 //信息
 const msg = {
@@ -84,7 +84,7 @@ const STATUS = {
   PROCESSING: 2,
 }
 // 通知类型
-const NOTIFICATION_TYPE: NOTIFICATION_TYPE_PROPS = {
+const NOTIFICATION_TYPE = {
   SUCCESS: 'success',
   WARNING: 'warning',
   INFO: 'info',
@@ -98,7 +98,7 @@ const NOTIFICATION_TYPE: NOTIFICATION_TYPE_PROPS = {
  */
 function CRUD(tableProps: CrudProps) {
   //默认参数
-  const defaultOptions: CrudProps = {
+  const defaultOptions = {
     idField: 'id',
     title: '',
     url: '',
@@ -125,10 +125,10 @@ function CRUD(tableProps: CrudProps) {
     delAllLoading: false,
     // CRUD Method
     crudMethod: {
-      add: (form) => {},
-      del: (id) => {},
-      edit: (form) => {},
-      get: (id) => {},
+      add: () => {},
+      del: () => {},
+      edit: () => {},
+      get: () => {},
     },
     optShow: {
       add: true,
@@ -138,8 +138,8 @@ function CRUD(tableProps: CrudProps) {
       reset: true,
     },
     HOOK,
-    tableRef: null,
-    formRef: null,
+    tableRef: undefined,
+    formRef: undefined,
     searchToggle: true,
     NOTIFICATION_TYPE,
   }
@@ -183,7 +183,7 @@ function CRUD(tableProps: CrudProps) {
     }),
     dialog: computed({
       get: () => {
-        return state.status.cu > 0
+        return state.status?.cu > 0
       },
       set: (val) => {
         // console.log(val)
@@ -194,19 +194,12 @@ function CRUD(tableProps: CrudProps) {
   return state
 }
 
-export function useCrud(tableProps) {
+export function useCrud(tableProps: CrudProps): CrudProps {
   let crud = CRUD(tableProps)
   console.log('crud: ', crud)
-  // 得到table ref
-  // 传递是 crud.currentTable = ()=>{return nextTick(()=>return ref)}
-  const getTable = async () => {
-    if (!crud.currentTable) return null
-    let res = await crud.currentTable()
-    return isRef(res) ? res.value : res
-  }
 
   // // hook 初始化时取不到
-  const findHook = (name:string) => {
+  const findHook = (name: string) => {
     if (isFn(crud.HOOK[name])) {
       return crud.HOOK[name](crud, crud.form)
     } else {
@@ -218,7 +211,7 @@ export function useCrud(tableProps) {
   }
 
   //是否是函数
-  const isFn = (result) => {
+  const isFn = (result: object) => {
     return Object.prototype.toString.call(result) === '[object,Function]'
   }
 
@@ -251,13 +244,13 @@ export function useCrud(tableProps) {
    * @return {*}
    */
   crud.getQueryParams = () => {
-    Object.keys(crud.query).length !== 0 &&
-      Object.keys(crud.query).forEach((item) => {
+    Object.keys(crud.query as object).length !== 0 &&
+      Object.keys(crud.query as object).forEach((item) => {
         if (crud.query[item] === null || crud.query[item] === '')
           crud.query[item] = undefined
       })
-    Object.keys(crud.params).length !== 0 &&
-      Object.keys(crud.params).forEach((item) => {
+    Object.keys(crud.params as object).length !== 0 &&
+      Object.keys(crud.params as object).forEach((item) => {
         if (crud.params[item] === null || crud.params[item] === '')
           crud.params[item] = undefined
       })
@@ -296,7 +289,7 @@ export function useCrud(tableProps) {
   crud.resetQuery = (flag = true) => {
     const defaultQuery = JSON.parse(JSON.stringify(crud.defaultQuery))
     const query = crud.query
-    Object.keys(query).forEach((key) => {
+    Object.keys(query as object).forEach((key) => {
       query[key] = defaultQuery[key]
     })
     // 重置参数
@@ -385,9 +378,7 @@ export function useCrud(tableProps) {
       crudFrom[key] = form[key]
     }
     //表单清空函数 resetFields
-    if (crud.formRef()) {
-      crud.formRef().clearValidate()
-    }
+    crud.formRef()?.clearValidate()
   }
 
   /**
@@ -432,9 +423,7 @@ export function useCrud(tableProps) {
       findHook('afterEditCancel')
     }
     // 清除表单验证
-    if (crud.formRef()) {
-      crud.formRef().clearValidate()
-    }
+    crud.formRef()?.clearValidate()
   }
 
   /**

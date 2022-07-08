@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-07 16:55:51
+ * @LastEditTime: 2022-07-08 09:55:52
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -56,9 +56,9 @@
 </template>
 
 <script lang="ts">
-import { toRefs, reactive, onMounted, onActivated, PropType } from 'vue'
+import { toRefs, Ref, reactive, onMounted, onActivated, PropType } from 'vue'
 import action from '@/components/global/index'
-import { CrudProps } from './types/crudProps'
+import { CrudProps,ELTableInstance } from './types/crudProps'
 import { Action } from '../global/types/action'
 import { tableAttr, tableColumn } from './types/tableAttr'
 interface searchForm extends Action {
@@ -97,7 +97,7 @@ export default {
   },
   setup(props) {
     const state = reactive({
-      table: null
+      table: null as ELTableInstance | null | undefined
     })
 
     onMounted(() => {
@@ -116,7 +116,7 @@ export default {
 
     onActivated(() => {
       //对 Table 进行重新布局。 当表格可见性变化时，您可能需要调用此方法以获得正确的布局
-      state.table.doLayout()
+      state.table?.doLayout()
     })
 
     return {
