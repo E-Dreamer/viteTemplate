@@ -3,7 +3,7 @@ import { ElForm, ElTable, MessageType } from 'element-plus'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-08 15:26:48
+ * @LastEditTime: 2022-07-08 16:40:49
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -63,10 +63,10 @@ interface pageProps {
   total: number
 }
 interface CrudMethods {
-  add: (form: object) => void | Promise<any>
-  del: (id: string | number | any[]) => void | Promise<any>
-  edit: (form: object) => void | Promise<any>
-  get: (id: string | number) => void | Promise<any>
+  add: (form: object) => Promise<any>
+  del: (id: string | number | any[]) => Promise<any>
+  edit: (form: object) => Promise<any>
+  get: (id: string | number) => Promise<any>
 }
 interface OptShowProps {
   add?: boolean
@@ -157,8 +157,8 @@ export interface CrudProps {
   toggleChange: () => void
   selectionChange: (val: any[]) => void
   toAdd: () => void
-  resetForm: (data?:object) => void
-  toEdit: (data:object) => void
+  resetForm: (data?: object) => void
+  toEdit: (data: object) => void
   cancelCU: () => void
   toDelete: (data: any[]) => void
   doDelete: (data: any[] | object) => void
