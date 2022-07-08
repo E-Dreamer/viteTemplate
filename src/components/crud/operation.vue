@@ -45,6 +45,10 @@
 <script lang="ts">
 import { reactive, toRefs, unref, nextTick, PropType } from 'vue'
 import { CrudProps, AuthProps, ELTableInstance } from './types/crudProps';
+
+import { ElMessageBox } from 'element-plus'
+import type { Action } from 'element-plus'
+
 type ColumnsObj = { show: boolean, [key: string]: any }
 interface State {
   allColumnsSelected: boolean
@@ -137,16 +141,17 @@ export default {
       }
     }
 
-    const toDelete = (datas:any[]) => {
-      // this.$confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      //   crud.delAllLoading = true
-      //   crud.doDelete(datas)
-      // }).catch(() => {
-      // })
+    const toDelete = (datas: any[]) => {
+      console.log(datas)
+      ElMessageBox.confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        crud.delAllLoading = true
+        crud.doDelete(datas)
+      }).catch(() => {
+      })
     }
     return {
       ...toRefs(state),

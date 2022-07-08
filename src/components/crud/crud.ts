@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-08 14:39:47
+ * @LastEditTime: 2022-07-08 15:00:06
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -34,7 +34,15 @@ function initData(url: string, params: object) {
   //   method: 'get'
   // })
   return new Promise((resolve, reject) => {
-    resolve({ url, params })
+    let data = [{ id: 1, name: '张三', address: '北京' }]
+    for (let i = 0; i < 10; i++) {
+      data.push({
+        id: data.length + 1,
+        name: `张三${data.length + 1}`,
+        address: '北京',
+      })
+    }
+    resolve(data)
 
     reject('报错了')
   })
@@ -288,30 +296,23 @@ export function useCrud(tableProps: CrudProps): CrudProps {
       return
     }
     console.log(crud.getQueryParams())
-    //模拟数据
-    crud.data.push({
-      id: crud.data.length + 1,
-      name: `张三${crud.data.length + 1}`,
-      address: '北京',
-    })
-    crud.page.total = crud.data.length
 
-    // return new Promise((resolve, reject) => {
-    //   crud.loading = true
-    //   initData(crud.url, crud.getQueryParams())
-    //     .then((data: any) => {
-    //       crud.page.total = data.totalElements
-    //       // crud.data = data.content
-    //       crud.resetDataStatus()
-    //       crud.loading = false
-    //       findHook('afterRefresh')
-    //       resolve(data)
-    //     })
-    //     .catch((err) => {
-    //       crud.loading = false
-    //       reject(err)
-    //     })
-    // })
+    return new Promise((resolve, reject) => {
+      crud.loading = true
+      initData(crud.url, crud.getQueryParams())
+        .then((data: any) => {
+          crud.page.total = data.totalElements
+          crud.data = data
+          crud.resetDataStatus()
+          crud.loading = false
+          findHook('afterRefresh')
+          resolve(data)
+        })
+        .catch((err) => {
+          crud.loading = false
+          reject(err)
+        })
+    })
   }
   /**
    * @description: 重置查询参数
@@ -540,7 +541,7 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     crud.status.edit = STATUS.PROCESSING
     crud.crudMethod
       .edit(crud.form)
-      .then((d:any) => {
+      .then((d: any) => {
         crud.status.edit = STATUS.NORMAL
         crud.getDataStatus(crud.getDataId(crud.form)).edit = STATUS.NORMAL
         editSuccessNotify()
@@ -548,7 +549,7 @@ export function useCrud(tableProps: CrudProps): CrudProps {
         crud.resetForm()
         crud.refresh()
       })
-      .catch((e:any) => {
+      .catch((e: any) => {
         crud.status.edit = STATUS.PREPARED
         findHook('afterEditError')
       })
@@ -566,12 +567,12 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @description: 预防删除第二页最后一条数据时，或者多选删除第二页的数据时，页码错误导致请求无数据
    * @param {*} size 页码
    * @return {*}
-   */  
-  crud.dleChangePage = (size)=> {
+   */
+  crud.dleChangePage = (size) => {
     if (crud.data.length === size && crud.page.page !== 1) {
       crud.page.page -= 1
     }
-  },
+  }
   /**
    * @description:
    * @param {*} data 需要删除的项
@@ -592,7 +593,7 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     }
     setDeleteT()
     let delAll: boolean = false
-    let dataStatus: any;
+    let dataStatus: any
     const ids = []
     if (data instanceof Array) {
       delAll = true
@@ -634,15 +635,17 @@ export function useCrud(tableProps: CrudProps): CrudProps {
   crud.resetDataStatus = () => {
     const dataStatus = {}
     function resetStatus(datas: any[]) {
-      datas.forEach((e) => {
-        dataStatus[crud.getDataId(e)] = {
-          delete: 0,
-          edit: 0,
-        }
-        if (e.children) {
-          resetStatus(e.children)
-        }
-      })
+      if (datas?.length) {
+        datas.forEach((e) => {
+          dataStatus[crud.getDataId(e)] = {
+            delete: 0,
+            edit: 0,
+          }
+          if (e.children) {
+            resetStatus(e.children)
+          }
+        })
+      }
     }
     resetStatus(crud.data)
     crud.dataStatus = dataStatus

@@ -3,7 +3,7 @@ import { ElForm, ElTable, MessageType } from 'element-plus'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-08 14:42:34
+ * @LastEditTime: 2022-07-08 15:02:07
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -161,7 +161,7 @@ export interface CrudProps {
   toEdit: () => void
   cancelCU: () => void
   toDelete: (data: any[]) => void
-  doDelete: (data: any[]) => void
+  doDelete: (data: any[] | object) => void
   cancelDelete: (data: any[]) => void
   beforeClickDelete: (data: object) => void
   doExport: () => void

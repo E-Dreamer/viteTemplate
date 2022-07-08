@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-08 11:46:10
+ * @LastEditTime: 2022-07-08 15:00:35
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -37,8 +37,8 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <!-- <el-button type="primary" @click="submitForm(ruleFormRef)">Create</el-button>
-    <el-button @click="resetForm(ruleFormRef)">Reset</el-button> -->
+      <el-button type="text" @click="crud.cancelCU">取消</el-button>
+      <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
     </el-dialog>
   </div>
 
@@ -49,6 +49,7 @@
 import { reactive, toRefs } from 'vue'
 //crudOperation
 import { useCrud, BasicCrud, CrudOperation, RROperation } from '@/components/crud/index'
+import { resolve } from 'path/posix'
 
 export default {
   components: { BasicCrud, CrudOperation, RROperation },
@@ -112,13 +113,19 @@ export default {
       ]
     })
     const add = () => {
-      console.log('新增接口')
+      return new Promise((resolve) => {
+        resolve('新增接口')
+      })
     }
     const edit = () => {
-      console.log('修改接口')
+      return new Promise((resolve) => {
+        resolve('修改接口')
+      })
     }
     const del = () => {
-      console.log('删除接口')
+      return new Promise((resolve) => {
+        resolve('删除接口')
+      })
     }
 
 
@@ -136,7 +143,7 @@ export default {
       console.log('return toadd')
       return true;
     }
-    crud.HOOK.beforeRefresh = (crud,form)=>{
+    crud.HOOK.beforeRefresh = (crud, form) => {
       return true
     }
 
@@ -187,9 +194,6 @@ export default {
         label: '地址',
         prop: 'address',
         slotProps: true
-      },
-      {
-        label: '啦啦啦'
       }
     ]
 
