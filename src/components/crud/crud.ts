@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-08 09:53:29
+ * @LastEditTime: 2022-07-08 10:23:48
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -198,10 +198,16 @@ export function useCrud(tableProps: CrudProps): CrudProps {
   let crud = CRUD(tableProps)
   console.log('crud: ', crud)
 
-  // // hook 初始化时取不到
-  const findHook = (name: string) => {
+  /**
+   * @description: 获取到hook的函数
+   * @param {string} name hook对象中的名称
+   * @param {*} first 第一个参数
+   * @param {*} seconed 第二个参数
+   * @return {*}
+   */
+  const findHook = (name: string, first:any = crud, second:any= crud.form) => {
     if (isFn(crud.HOOK[name])) {
-      return crud.HOOK[name](crud, crud.form)
+      return crud.HOOK[name](first, second)
     } else {
       const fn = () => {
         return true
@@ -427,11 +433,13 @@ export function useCrud(tableProps: CrudProps): CrudProps {
   }
 
   /**
-   * @description: 删除
+   * @description: 启动删除
    * @param {*} data 需要删除的项
    * @return {*}
    */
-  crud.toDelete = async (data) => {}
+  crud.toDelete = async (data) => {
+    // crud.getDataStatus(crud.getDataId(data)).delete = STATUS.PREPARED
+  }
 
   /**
    * @description:
@@ -444,7 +452,14 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @param {*} data 需要删除的项
    * @return {*}
    */
-  crud.cancelDelete = async (data) => {}
+  crud.cancelDelete = async (data) => {
+    if (!findHook('beforeDeleteCancel')) {
+      return
+    }
+    // crud.getDataStatus(crud.getDataId(data)).delete = STATUS.NORMAL
+
+    findHook('afterDeleteCancel', data)
+  }
 
   /**
    * @description: 删除之前的操作

@@ -1,14 +1,14 @@
 import { ComputedRef, readonly, Ref } from 'vue'
-import {  ElForm, ElTable, MessageType } from 'element-plus'
+import { ElForm, ElTable, MessageType } from 'element-plus'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-08 09:54:45
+ * @LastEditTime: 2022-07-08 10:24:55
  * @LastEditors: E-Dreamer
  * @Description:
  */
 
-export type ElFormInstance = InstanceType<typeof ElForm>;
+export type ElFormInstance = InstanceType<typeof ElForm>
 export type ELTableInstance = InstanceType<typeof ElTable>
 export interface HookProps {
   beforeRefresh?: (crud: CrudProps, form: object) => void
@@ -130,12 +130,12 @@ export interface CrudProps {
   // 按钮是否显示
   optShow?: OptShowProps
   // hook函数
-  HOOK?: HookProps
+  HOOK: HookProps
   // table 的 ref
   tableRef?: ELTableInstance | null
   // form表单的 ref
   // formRef: () => Ref<HTMLElement | null>
-  formRef: () =>  ElFormInstance | null
+  formRef: () => ElFormInstance | null
   // 是否展示筛选栏
   searchToggle?: boolean
   // 消息的类型
