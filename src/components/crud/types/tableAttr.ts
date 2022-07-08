@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 16:30:30
- * @LastEditTime: 2022-07-07 16:47:04
+ * @LastEditTime: 2022-07-08 15:17:40
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -17,5 +17,6 @@ export interface tableAttr {
 export interface tableColumn {
   label: string
   prop: string
+  // 是否使用插槽 prop就是插槽的name
   slotProps?: boolean
 }

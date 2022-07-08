@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-08 15:07:02
+ * @LastEditTime: 2022-07-08 15:21:02
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -396,8 +396,8 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @description: 重置表单
    * @return {*}
    */
-  crud.resetForm = () => {
-    const form = crud.defaultForm
+  crud.resetForm = (data) => {
+    const form = data || crud.defaultForm
     const crudFrom = crud.form
     for (let key in form) {
       // if (crudFrom.hasOwnProperty(key)) {
@@ -413,8 +413,8 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @description: 修改
    * @return {*}
    */
-  crud.toEdit = () => {
-    crud.resetForm()
+  crud.toEdit = (data) => {
+    crud.resetForm(JSON.parse(JSON.stringify(data)))
     if (!(findHook('beforeToAdd') && findHook('beforeToCU'))) {
       return
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-08 15:07:42
+ * @LastEditTime: 2022-07-08 15:16:11
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -49,7 +49,6 @@
 import { reactive, toRefs } from 'vue'
 //crudOperation
 import { useCrud, BasicCrud, CrudOperation, RROperation } from '@/components/crud/index'
-import { resolve } from 'path/posix'
 
 export default {
   components: { BasicCrud, CrudOperation, RROperation },
