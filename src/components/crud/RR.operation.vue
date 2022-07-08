@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-08 10:06:17
+ * @LastEditTime: 2022-07-08 11:13:24
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -25,7 +25,7 @@
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
         <el-button size="small" type="text" @click="doCancel">取消</el-button>
-
+        
         <el-button type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
       </div>
     </el-popover>
@@ -73,7 +73,7 @@ export default {
       default: '确定删除本条数据吗？'
     }
   },
-  setup(props: { crud: CrudProps }) {
+  setup(props: { crud: CrudProps, data: object }) {
     const crud = props.crud
     const state = reactive({
       pop: false as boolean
@@ -97,7 +97,7 @@ export default {
     }
 
     const toDelete = () => {
-      // crud.beforeClickDelete(props.data)
+      crud.beforeClickDelete(props.data)
       state.pop = true;
     }
     // crud.HOOK.afterDelete = (crud, data) => {

@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-08 09:24:41
+ * @LastEditTime: 2022-07-08 11:46:10
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -20,8 +20,8 @@
         <CrudOperation :crud="crud" :auth="auth"></CrudOperation>
       </template>
       <!-- 操作栏 -->
-      <template #operation="scope">
-        <RROperation :crud="crud" :scope="scope.row" :auth="auth"></RROperation>
+      <template #operation="{ scope }">
+        <RROperation :crud="crud" :data="scope.row" :auth="auth"></RROperation>
       </template>
     </BasicCrud>
     <el-dialog ref="dialog" :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.dialog"
@@ -52,7 +52,7 @@ import { useCrud, BasicCrud, CrudOperation, RROperation } from '@/components/cru
 
 export default {
   components: { BasicCrud, CrudOperation, RROperation },
-  setup () {
+  setup() {
 
     const state = reactive({
       count: 0,
@@ -133,7 +133,11 @@ export default {
     })
     // HOOK 可在外配置 也可以直接写入useCrud中
     crud.HOOK.beforeToAdd = (crud, form) => {
-      return false;
+      console.log('return toadd')
+      return true;
+    }
+    crud.HOOK.beforeRefresh = (crud,form)=>{
+      return true
     }
 
     // onMounted(() => {
@@ -185,7 +189,7 @@ export default {
         slotProps: true
       },
       {
-        label:'啦啦啦'
+        label: '啦啦啦'
       }
     ]
 
