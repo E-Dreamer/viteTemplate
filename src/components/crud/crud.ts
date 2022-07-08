@@ -1,30 +1,45 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-08 15:21:02
+ * @LastEditTime: 2022-07-08 17:04:40
  * @LastEditors: E-Dreamer
  * @Description:
  */
 import { reactive, isRef, onMounted, computed } from 'vue'
-import { deepClone } from '@/utils/utils.js'
 import { ElMessage } from 'element-plus'
 import {
   CrudProps,
   NOTIFICATION_TYPE_PROPS,
   HookProps,
 } from './types/crudProps'
-function mergeOptions(src: object, opts: object) {
-  const optsRet = {
-    ...src,
+// function mergeOptions(src: object, opts: object) {
+//   const optsRet = {
+//     ...src,
+//   }
+//   for (const key in src) {
+//     if (opts.hasOwnProperty(key)) {
+//       optsRet[key] = opts[key]
+//     }
+//   }
+//   return optsRet
+// }
+//是否是函数
+function deepClone(source: any): object {
+  if (typeof source !== 'object' || source == null) {
+    return source
   }
-  for (const key in src) {
-    if (opts.hasOwnProperty(key)) {
-      optsRet[key] = opts[key]
+  const target = Array.isArray(source) ? [] : {}
+  for (const key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (typeof source[key] === 'object' && source[key] !== null) {
+        target[key] = deepClone(source[key])
+      } else {
+        target[key] = source[key]
+      }
     }
   }
-  return optsRet
+  return target
 }
-//是否是函数
 const isFn = (result: object) => {
   return Object.prototype.toString.call(result) === '[object Function]'
 }

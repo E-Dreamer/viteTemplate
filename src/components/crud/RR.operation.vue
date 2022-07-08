@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-08 11:13:24
+ * @LastEditTime: 2022-07-08 17:06:34
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -13,19 +13,19 @@
       <template v-if="btnType === 'text'">编辑</template>
     </el-button>
     <slot />
-    <!-- -->
-    <!-- :loading="crud.dataStatus[crud.getDataId(data)] && crud.dataStatus[crud.getDataId(data)].delete === 2" -->
     <el-popover v-model:visible="pop" v-auth="auth.del" placement="top" width="180" trigger="click"
       @show="onPopoverShow" @hide="onPopoverHide">
       <template #reference>
-        <el-button v-if="crud.optShow.del" :class="[btnType && 'danger-text-btn']" :disabled="disabledDle"
-          :type="btnType || 'danger'" icon="el-icon-delete" size="small" @click="toDelete">
+        <el-button v-if="crud.optShow.del"
+          :loading="crud.dataStatus[crud.getDataId(data)] && crud.dataStatus[crud.getDataId(data)].delete === 2"
+          :class="[btnType && 'danger-text-btn']" :disabled="disabledDle" :type="btnType || 'danger'"
+          icon="el-icon-delete" size="small" @click="toDelete">
         </el-button>
       </template>
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
         <el-button size="small" type="text" @click="doCancel">取消</el-button>
-        
+
         <el-button type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
       </div>
     </el-popover>

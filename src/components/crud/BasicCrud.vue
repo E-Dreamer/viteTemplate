@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-08 10:49:37
+ * @LastEditTime: 2022-07-08 17:07:15
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { toRefs, Ref, reactive, onMounted, onActivated, PropType } from 'vue'
-import action from '@/components/global/index'
+import  action from '@/components/global/index'
 import { CrudProps,ELTableInstance } from './types/crudProps'
 import { Action } from '../global/types/action'
 import { tableAttr, tableColumn } from './types/tableAttr'

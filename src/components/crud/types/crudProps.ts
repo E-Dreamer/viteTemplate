@@ -1,9 +1,10 @@
 import { ComputedRef, readonly, Ref } from 'vue'
-import { ElForm, ElTable, MessageType } from 'element-plus'
+import { ElForm, ElTable,  } from 'element-plus'
+type MessageType = 'success' | 'info' | 'warning' | 'error'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-08 16:40:49
+ * @LastEditTime: 2022-07-08 17:09:48
  * @LastEditors: E-Dreamer
  * @Description:
  */

@@ -47,7 +47,6 @@ import { reactive, toRefs, unref, nextTick, PropType } from 'vue'
 import { CrudProps, AuthProps, ELTableInstance } from './types/crudProps';
 
 import { ElMessageBox } from 'element-plus'
-import type { Action } from 'element-plus'
 
 type ColumnsObj = { show: boolean, [key: string]: any }
 interface State {
