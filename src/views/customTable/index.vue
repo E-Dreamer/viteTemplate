@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-08 15:00:35
+ * @LastEditTime: 2022-07-08 15:07:42
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -152,14 +152,6 @@ export default {
     //   crud.formRef = state.getForm
     // })
 
-
-
-    // state.crud.HOOK.beforeToEdit = (crud, form) => {
-    //   state.count++
-    //   return true
-    // }
-
-
     const change = () => {
       // state.searchForm[0].componentProps.disabled = !state.searchForm[0].componentProps.disabled;
       // console.log(state.searchForm[0])
@@ -171,7 +163,8 @@ export default {
         'stripe': true,
         'border': true,
         'show-header': true,
-        'highlight-current-row': true
+        'highlight-current-row': true,
+        // onSelectionChange:crud.selectAllChange
       },
       //全选栏的 props
       selection: {
