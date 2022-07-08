@@ -3,7 +3,7 @@ import { ElForm, ElTable, MessageType } from 'element-plus'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-08 15:21:19
+ * @LastEditTime: 2022-07-08 15:26:48
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -157,7 +157,7 @@ export interface CrudProps {
   toggleChange: () => void
   selectionChange: (val: any[]) => void
   toAdd: () => void
-  resetForm: (data:object) => void
+  resetForm: (data?:object) => void
   toEdit: (data:object) => void
   cancelCU: () => void
   toDelete: (data: any[]) => void
