@@ -44,7 +44,7 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, unref, nextTick, PropType } from 'vue'
-import { CrudProps, AuthProps,ELTableInstance } from './types/crudProps';
+import { CrudProps, AuthProps, ELTableInstance } from './types/crudProps';
 type ColumnsObj = { show: boolean, [key: string]: any }
 interface State {
   allColumnsSelected: boolean
@@ -63,7 +63,7 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup(props: { crud: CrudProps; auth: AuthProps }) {
     const crud = props.crud;
     const state = reactive<State>({
       allColumnsSelected: true,
@@ -137,7 +137,7 @@ export default {
       }
     }
 
-    const toDelete = (datas) => {
+    const toDelete = (datas:any[]) => {
       // this.$confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
       //   confirmButtonText: '确定',
       //   cancelButtonText: '取消',

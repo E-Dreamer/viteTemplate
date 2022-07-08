@@ -84,7 +84,7 @@ const STATUS = {
   PROCESSING: 2,
 }
 // 通知类型
-const NOTIFICATION_TYPE = {
+const NOTIFICATION_TYPE: NOTIFICATION_TYPE_PROPS = {
   SUCCESS: 'success',
   WARNING: 'warning',
   INFO: 'info',

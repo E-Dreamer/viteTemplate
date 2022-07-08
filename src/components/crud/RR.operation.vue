@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-08 09:45:12
+ * @LastEditTime: 2022-07-08 10:06:17
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -73,7 +73,7 @@ export default {
       default: '确定删除本条数据吗？'
     }
   },
-  setup(props) {
+  setup(props: { crud: CrudProps }) {
     const crud = props.crud
     const state = reactive({
       pop: false as boolean
