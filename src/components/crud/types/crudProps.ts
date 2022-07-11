@@ -4,7 +4,7 @@ export type MessageType = 'success' | 'info' | 'warning' | 'error'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-11 16:00:12
+ * @LastEditTime: 2022-07-11 16:56:37
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -182,57 +182,6 @@ export interface CrudProps {
   dleChangePage?: (size: number) => void
 }
 
-export interface CrudProps1 {
-  // id字段名
-  idField?: string
-  // 标题
-  title: string
-  // 请求数据的url
-  url: string
-  // 表格数据
-  data?: any[]
-  // 选择项
-  selections?: Array<any>
-  // 待查询的对象
-  query?: {
-    [key: string]: any
-  }
-  // 查询数据的参数
-  params?: {
-    [key: string]: any
-  }
-  // Form 表单
-  form: {
-    [key: string]: any
-  }
-  // 重置表单
-  defaultForm?: {
-    [key: string]: any
-  }
-  // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
-  sort?: string | Array<string>
-  // 分页相关
-  page?: pageProps
-  // 整体loading
-  loading?: boolean
-  // 导出的 Loading
-  downloadLoading?: boolean
-  // 删除的 Loading
-  delAllLoading?: boolean
-  // CRUD Method
-  crudMethod: CrudMethods
-  // 按钮是否显示
-  optShow?: OptShowProps
-  // hook函数
-  HOOK?: HookProps
-  // table 的 ref
-  tableRef?: ELTableInstance | null
-  // form表单的 ref 传递函数缺陷 第一次获取不到 因为存在于dialog 只有打开才能获取到
-  // formRef: () => Ref<HTMLElement | null>
-  formRef: () => ElFormInstance | null
-  // 是否展示筛选栏
-  searchToggle?: boolean
-}
 export interface AuthProps {
   add?: string[]
   edit?: string[]
