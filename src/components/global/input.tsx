@@ -1,25 +1,9 @@
+import { InputProps } from 'element-plus';
 import { Component, defineComponent, PropType } from 'vue'
 import { SearchInfo, Action } from './types/action'
+
 interface InputAction extends Action {
-  componentProps?: {
-    maxlength?: string | number;
-    minlength?: number;
-    showWordLimit?: boolean;
-    placeholder?: string;
-    clearable?: boolean;
-    formatter?: () => void;
-    parser?: () => void;
-    disabled?: boolean;
-    size?: 'large' | 'small' | 'default';
-    prefixIcon?: string | Component;
-    suffixIcon?: string | Component;
-    autosize: boolean | {
-      minRows?: number;
-      maxRows?: number;
-    };
-    readonly: boolean;
-    inputStyle: Record<string, any>
-  },
+  componentProps?: InputProps,
   subType?: 'password' | 'textarea' | 'number'
 }
 export default defineComponent({

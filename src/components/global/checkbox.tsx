@@ -3,10 +3,10 @@
  * @param {*}
  * @return {*}
  */
+import { CheckboxProps } from 'element-plus';
 import { defineComponent, PropType, ComputedRef } from 'vue'
 import { SearchInfo, Action } from './types/action'
-import { IUseCheckboxProps } from 'element-plus/lib/components/checkbox/src/useCheckbox'
-import { AnyFunction } from 'element-plus/es/utils/types';
+
 interface ICheckboxGroupInstance {
   name?: string;
   modelValue?: ComputedRef;
@@ -17,10 +17,9 @@ interface ICheckboxGroupInstance {
   fill?: ComputedRef<string>;
   textColor?: ComputedRef<string>;
   checkboxGroupSize?: ComputedRef<string>;
-  changeEvent?: AnyFunction<any>;
 }
 interface InputAction extends Action {
-  componentProps?: IUseCheckboxProps,
+  componentProps?: CheckboxProps
   optionsProps?: ICheckboxGroupInstance
 }
 export default defineComponent({

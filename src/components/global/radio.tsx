@@ -1,8 +1,9 @@
+import { RadioProps } from 'element-plus'
 import { defineComponent, PropType } from 'vue'
 import { SearchInfo, Action } from './types/action'
 
 interface radioProps extends Action {
-  componentProps?:object,
+  componentProps?:RadioProps,
   optionsProps?:object
 }
 export default defineComponent({
