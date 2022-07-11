@@ -1,10 +1,10 @@
 import { ComputedRef, readonly, Ref } from 'vue'
-import { ElForm, ElTable,  } from 'element-plus'
+import { ElForm, ElTable } from 'element-plus'
 export type MessageType = 'success' | 'info' | 'warning' | 'error'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-11 14:11:21
+ * @LastEditTime: 2022-07-11 16:00:12
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -67,7 +67,7 @@ interface CrudMethods {
   add: (form: object) => Promise<any>
   del: (id: string | number | any[]) => Promise<any>
   edit: (form: object) => Promise<any>
-  get: (id: string | number) => Promise<any>
+  get?: (id: string | number) => Promise<any>
 }
 interface OptShowProps {
   add?: boolean
@@ -91,21 +91,21 @@ export interface NOTIFICATION_TYPE_PROPS {
 }
 export interface CrudProps {
   // id字段名
-  idField: string
+  idField?: string
   // 标题
   title: string
   // 请求数据的url
   url: string
   // 表格数据
-  data: any[]
+  data?: any[]
   // 选择项
   selections?: Array<any>
   // 待查询的对象
-  query: {
+  query?: {
     [key: string]: any
   }
   // 查询数据的参数
-  params: {
+  params?: {
     [key: string]: any
   }
   // Form 表单
@@ -119,7 +119,7 @@ export interface CrudProps {
   // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
   sort?: string | Array<string>
   // 分页相关
-  page: pageProps
+  page?: pageProps
   // 整体loading
   loading?: boolean
   // 导出的 Loading
@@ -131,7 +131,7 @@ export interface CrudProps {
   // 按钮是否显示
   optShow?: OptShowProps
   // hook函数
-  HOOK: HookProps
+  HOOK?: HookProps
   // table 的 ref
   tableRef?: ELTableInstance | null
   // form表单的 ref 传递函数缺陷 第一次获取不到 因为存在于dialog 只有打开才能获取到
@@ -140,48 +140,99 @@ export interface CrudProps {
   // 是否展示筛选栏
   searchToggle?: boolean
   // 消息的类型
-  readonly NOTIFICATION_TYPE: NOTIFICATION_TYPE_PROPS
+  readonly NOTIFICATION_TYPE?: NOTIFICATION_TYPE_PROPS
   // 关于dialog的
-  status: StatusProps
+  status?: StatusProps
   // 默认查询参数
   defaultQuery?: {
     [key: string]: any
   }
-  dataStatus: { [key: string | number]: any }
-  notify: (message: string, type: MessageType) => void
-  getQueryParams: () => object
-  refresh: () => void
-  resetQuery: () => void
-  toQuery: () => void
-  sizeChangeHandler: (e: number) => void
-  pageChangeHandler: (e: number) => void
-  toggleChange: () => void
-  selectionChange: (val: any[]) => void
-  toAdd: () => void
-  resetForm: (data?: object) => void
-  toEdit: (data: object) => void
-  cancelCU: () => void
-  toDelete: (data: any[]) => void
-  doDelete: (data: any[] | object) => void
-  cancelDelete: (data: any[] | object) => void
-  beforeClickDelete: (data: object) => void
-  doExport: () => void
-  submitCU: (flag: boolean) => void
-  doAdd: () => void
-  doAddNoClose: () => void
-  doEdit: () => void
-  getDataStatus: (id: number | string) => {
+  dataStatus?: { [key: string | number]: any }
+  notify?: (message: string, type: MessageType) => void
+  getQueryParams?: () => object
+  refresh?: () => void
+  resetQuery?: () => void
+  toQuery?: () => void
+  sizeChangeHandler?: (e: number) => void
+  pageChangeHandler?: (e: number) => void
+  toggleChange?: () => void
+  selectionChange?: (val: any[]) => void
+  toAdd?: () => void
+  resetForm?: (data?: object) => void
+  toEdit?: (data: object) => void
+  cancelCU?: () => void
+  toDelete?: (data: any[]) => void
+  doDelete?: (data: any[] | object) => void
+  cancelDelete?: (data: any[] | object) => void
+  beforeClickDelete?: (data: object) => void
+  doExport?: () => void
+  submitCU?: (flag: boolean) => void
+  doAdd?: () => void
+  doAddNoClose?: () => void
+  doEdit?: () => void
+  getDataStatus?: (id: number | string) => {
     edit: number
     delete: number
   }
-  resetDataStatus: () => void
-  getDataId: (data: object) => string | number
-  toggleRowSelection: (selection: any[], data: { children: any[] }) => void
-  selectChange: (selection: any[], row: { children: any[] }) => void
-  selectAllChange: (selection: any[]) => void
-  dleChangePage: (size: number) => void
+  resetDataStatus?: () => void
+  getDataId?: (data: object) => string | number
+  toggleRowSelection?: (selection: any[], data: { children: any[] }) => void
+  selectChange?: (selection: any[], row: { children: any[] }) => void
+  selectAllChange?: (selection: any[]) => void
+  dleChangePage?: (size: number) => void
 }
 
+export interface CrudProps1 {
+  // id字段名
+  idField?: string
+  // 标题
+  title: string
+  // 请求数据的url
+  url: string
+  // 表格数据
+  data?: any[]
+  // 选择项
+  selections?: Array<any>
+  // 待查询的对象
+  query?: {
+    [key: string]: any
+  }
+  // 查询数据的参数
+  params?: {
+    [key: string]: any
+  }
+  // Form 表单
+  form: {
+    [key: string]: any
+  }
+  // 重置表单
+  defaultForm?: {
+    [key: string]: any
+  }
+  // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'createTime,asc']
+  sort?: string | Array<string>
+  // 分页相关
+  page?: pageProps
+  // 整体loading
+  loading?: boolean
+  // 导出的 Loading
+  downloadLoading?: boolean
+  // 删除的 Loading
+  delAllLoading?: boolean
+  // CRUD Method
+  crudMethod: CrudMethods
+  // 按钮是否显示
+  optShow?: OptShowProps
+  // hook函数
+  HOOK?: HookProps
+  // table 的 ref
+  tableRef?: ELTableInstance | null
+  // form表单的 ref 传递函数缺陷 第一次获取不到 因为存在于dialog 只有打开才能获取到
+  // formRef: () => Ref<HTMLElement | null>
+  formRef: () => ElFormInstance | null
+  // 是否展示筛选栏
+  searchToggle?: boolean
+}
 export interface AuthProps {
   add?: string[]
   edit?: string[]

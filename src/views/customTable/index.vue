@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-11 14:57:16
+ * @LastEditTime: 2022-07-11 15:53:48
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -137,15 +137,19 @@ export default {
       form: state.form,
       query: { className: '啦啦啦' },
       formRef: () => { return state.getForm }
+
     })
     // HOOK 可在外配置 也可以直接写入useCrud中
-    crud.HOOK.beforeToAdd = (crud, form) => {
-      console.log('return toadd')
-      return true;
+    if (crud.HOOK) {
+      crud.HOOK.beforeToAdd = (crud, form) => {
+        console.log('return toadd')
+        return true;
+      }
+      crud.HOOK.beforeRefresh = (crud, form) => {
+        return true
+      }
     }
-    crud.HOOK.beforeRefresh = (crud, form) => {
-      return true
-    }
+
 
     // onMounted(() => {
     //   // 给crud.formRef赋值
