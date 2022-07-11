@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-09 08:38:26
- * @LastEditTime: 2022-07-11 14:38:43
+ * @LastEditTime: 2022-07-11 14:41:21
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -69,6 +69,7 @@ export default {
         let matched = currentRoute.matched.filter(
           (item) => item.meta && item.meta.title
         );
+        matched.shift()
         // const first = matched[0];
 
         // const homepath = findHomePath(router.options.routes)
