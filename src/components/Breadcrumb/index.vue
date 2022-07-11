@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-09 08:38:26
- * @LastEditTime: 2022-05-05 09:25:08
+ * @LastEditTime: 2022-07-11 14:38:43
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -69,12 +69,12 @@ export default {
         let matched = currentRoute.matched.filter(
           (item) => item.meta && item.meta.title
         );
-        const first = matched[0];
+        // const first = matched[0];
 
-        const homepath = findHomePath(router.options.routes)
-        if (!state.isHome(first)) {
-          matched = [homepath].concat(matched);
-        }
+        // const homepath = findHomePath(router.options.routes)
+        // if (!state.isHome(first)) {
+        //   matched = [homepath].concat(matched);
+        // }
 
         state.levelList = matched.filter(
           (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false
