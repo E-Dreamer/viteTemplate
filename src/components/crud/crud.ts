@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-08 17:04:40
+ * @LastEditTime: 2022-07-11 13:47:49
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -180,6 +180,7 @@ function CRUD(tableProps: CrudProps) {
     formRef: undefined,
     searchToggle: true,
     NOTIFICATION_TYPE,
+    dataStatus:{}
   }
   // tableProps = mergeOptions(defaultOptions, tableProps)
   tableProps = Object.assign(defaultOptions, tableProps)

@@ -1,11 +1,4 @@
 <!--
- * @Author: E-Dreamer
- * @Date: 2021-09-08 14:34:09
- * @LastEditTime: 2021-09-08 14:56:54
- * @LastEditors: E-Dreamer
- * @Description: 
--->
-<!--
  * @Author: 陈诚
  * @Date: 2021-09-06 09:24:10
  * @LastEditTime: 2021-09-06 15:36:53
@@ -42,7 +35,7 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 import { useStore } from "vuex";
 export default {
   name: "SidebarLogo",

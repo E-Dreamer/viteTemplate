@@ -3,31 +3,40 @@
     <span class="crud-opts-left">
       <!--左侧插槽-->
       <slot name="left" />
-      <el-button v-if="crud.optShow.add" v-auth="auth.add" class="filter-item" size="small" type="primary"
-        icon="el-icon-plus" @click="crud.toAdd">
-        新增
-      </el-button>
-      <el-button v-if="crud.optShow.edit" v-auth="auth.edit" class="filter-item" size="small" type="success"
-        icon="el-icon-edit" :disabled="crud.selections.length !== 1" @click="crud.toEdit(crud.selections[0])">
-        修改
-      </el-button>
-      <el-button v-if="crud.optShow.del" v-auth="auth.del" class="filter-item" type="danger" icon="el-icon-delete"
-        size="small" :loading="crud.delAllLoading" :disabled="crud.selections.length === 0"
-        @click="toDelete(crud.selections)">
-        删除
-      </el-button>
-      <el-button v-if="crud.optShow.download" v-auth="auth.download" :loading="crud.downloadLoading"
-        :disabled="!crud.data.length" class="filter-item" size="small" type="warning" icon="el-icon-download"
-        @click="crud.doExport">导出</el-button>
+      <span v-auth="auth.add" class="btn">
+        <el-button v-if="crud.optShow.add" class="filter-item" size="small" type="primary" icon="plus"
+          @click="crud.toAdd">
+          新增
+        </el-button>
+      </span>
+
+      <span v-auth="auth.edit" class="btn">
+        <el-button v-if="crud.optShow.edit" class="filter-item" size="small" type="success" icon="Edit"
+          :disabled="crud.selections.length !== 1" @click="crud.toEdit(crud.selections[0])">
+          修改
+        </el-button>
+      </span>
+      <span v-auth="auth.del" class="btn">
+        <el-button v-if="crud.optShow.del" class="filter-item" type="danger" icon="delete" size="small"
+          :loading="crud.delAllLoading" :disabled="crud.selections.length === 0" @click="toDelete(crud.selections)">
+          删除
+        </el-button>
+      </span>
+      <span v-auth="auth.download" class="btn">
+        <el-button v-if="crud.optShow.download" :loading="crud.downloadLoading" :disabled="!crud.data.length"
+          class="filter-item" size="small" type="warning" icon="download" @click="crud.doExport">
+          导出
+        </el-button>
+      </span>
       <!--右侧-->
       <slot name="right" />
     </span>
     <el-button-group class="crud-opts-right">
-      <el-button size="small" plain type="info" icon="el-icon-search" @click="crud.toggleChange" />
-      <el-button size="small" icon="el-icon-refresh" @click="crud.refresh" />
+      <el-button size="small" plain type="info" icon="search" @click="crud.toggleChange" />
+      <el-button size="small" icon="refresh" @click="crud.refresh" />
       <el-popover placement="bottom-end" width="150" trigger="click" popper-class="checkboxPopover">
         <template #reference>
-          <el-button size="small" icon="el-icon-s-grid"></el-button>
+          <el-button size="small" icon="grid"></el-button>
         </template>
 
         <el-checkbox v-model="allColumnsSelected" :indeterminate="allColumnsSelectedIndeterminate"
@@ -175,6 +184,10 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
+}
+
+.btn {
+  margin-right: 10px;
 }
 
 :deep(.el-button) {

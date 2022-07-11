@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-08 17:07:15
+ * @LastEditTime: 2022-07-11 13:53:46
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -18,8 +18,8 @@
             </el-form-item>
           </el-col>
           <el-form-item>
-            <el-button size="small" type="primary" @click="crud.toQuery">查询</el-button>
-            <el-button v-if="crud.optShow.reset" size="small" type="warning" @click="crud.resetQuery">重置</el-button>
+            <el-button type="primary" @click="crud.toQuery">查询</el-button>
+            <el-button v-if="crud.optShow.reset" type="warning" @click="crud.resetQuery">重置</el-button>
           </el-form-item>
         </el-row>
       </el-form>
@@ -48,17 +48,24 @@
 
     <div class="pagination">
       <el-pagination v-model:currentPage="crud.page.page" v-model:page-size="crud.page.size"
-        :page-sizes="[10, 20, 30, 40]" small layout="total,prev, pager, next,sizes" :total="crud.page.total"
-        @size-change="crud.sizeChangeHandler($event)" @current-change="crud.pageChangeHandler">
-      </el-pagination>
+        :page-sizes="[10, 20, 30, 40]" small layout="total, sizes, prev, pager, next, jumper" :total="crud.page.total"
+        @size-change="crud.sizeChangeHandler" @current-change="crud.pageChangeHandler" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { toRefs, Ref, reactive, onMounted, onActivated, PropType } from 'vue'
-import  action from '@/components/global/index'
-import { CrudProps,ELTableInstance } from './types/crudProps'
+import {
+  toRefs,
+  Ref,
+  reactive,
+  onMounted,
+  onActivated,
+  PropType,
+  computed,
+} from 'vue'
+import action from '@/components/global/index'
+import { CrudProps, ELTableInstance } from './types/crudProps'
 import { Action } from '../global/types/action'
 import { tableAttr, tableColumn } from './types/tableAttr'
 interface searchForm extends Action {
@@ -93,11 +100,11 @@ export default {
         return []
       },
       require: true,
-    }
+    },
   },
   setup(props) {
     const state = reactive({
-      table: null as ELTableInstance | null | undefined
+      table: null as ELTableInstance | null | undefined,
     })
 
     onMounted(() => {
@@ -118,9 +125,8 @@ export default {
       //对 Table 进行重新布局。 当表格可见性变化时，您可能需要调用此方法以获得正确的布局
       state.table?.doLayout()
     })
-
     return {
-      ...toRefs(state)
+      ...toRefs(state),
     }
   },
 }
@@ -129,6 +135,11 @@ export default {
 :deep(.el-form-item__content) {
   display: flex;
   align-items: center;
+  line-height: normal;
+
+  >div {
+    width: 100%;
+  }
 }
 
 .wrapper {
@@ -160,7 +171,6 @@ export default {
 
   >span {
     font-size: 12px;
-
   }
 }
 </style>

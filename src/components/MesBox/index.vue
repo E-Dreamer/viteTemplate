@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-11-15 14:46:00
- * @LastEditTime: 2021-11-15 16:16:57
+ * @LastEditTime: 2022-07-11 10:49:26
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -34,7 +34,7 @@
 </template>
 <script>
 import { ElButton } from 'element-plus'
-import { Close } from '@element-plus/icons'
+import { Close } from '@element-plus/icons-vue'
 import { reactive, toRefs } from 'vue'
 export default {
   components: { ElButton ,Close},

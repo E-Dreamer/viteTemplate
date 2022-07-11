@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 11:57:43
- * @LastEditTime: 2021-09-10 10:45:39
+ * @LastEditTime: 2022-07-11 11:15:46
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -12,9 +12,8 @@ export default {
   logout:'logout',
   lock:'lock',
   size:{
-    medium :'medium',
     small :'small',
-    mini:'mini',
+    large:'large',
     default:"default"
   }
 }

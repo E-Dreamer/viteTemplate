@@ -1,32 +1,24 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-07 16:14:50
- * @LastEditTime: 2021-09-10 11:05:07
+ * @LastEditTime: 2022-07-11 11:14:38
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <div class="navbar">
-    <Hamburger id="hamburger-container"
-               :is-active="sidebar.opened"
-               class="hamburger-container"
-               @toggleClick="toggleSideBar" />
+    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+      @toggleClick="toggleSideBar" />
 
     <Breadcrumb></Breadcrumb>
 
     <div class="right_menu">
       <Screenfull class="right_menu_item hover_effect"></Screenfull>
-      <template class="right_menu_item hover_effect">
-        <SelectSize ></SelectSize>
-      </template>
-      <template class="right_menu_item hover_effect">
-        <SelectLang></SelectLang>
-      </template>
-      <el-dropdown trigger="click" :size='size'
-                   class="avatar_container right_menu_item hover_effect">
+      <SelectSize class="right_menu_item hover_effect"></SelectSize>
+      <SelectLang class="right_menu_item hover_effect"></SelectLang>
+      <el-dropdown trigger="click" :size='size' class="avatar_container right_menu_item hover_effect">
         <div class="avatar_wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'"
-               class="user_avatar" />
+          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user_avatar" />
           <el-icon>
             <caret-bottom />
           </el-icon>
@@ -35,11 +27,10 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="lockFull">
-              <span style='display:block'>{{$t('lock')}}</span>
+              <span style='display:block'>{{ $t('lock') }}</span>
             </el-dropdown-item>
-            <el-dropdown-item divided
-                              @click="logout">
-              <span style="display: block">{{$t('logout')}}</span>
+            <el-dropdown-item divided @click="logout">
+              <span style="display: block">{{ $t('logout') }}</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -60,9 +51,9 @@ import sizefn from '@/components/size'
 // import { CaretBottom } from '@element-plus/icons'
 export default {
   name: 'Navbar',
-  components: { Hamburger, Breadcrumb ,Screenfull,SelectSize,SelectLang},
+  components: { Hamburger, Breadcrumb, Screenfull, SelectSize, SelectLang },
   setup () {
-    const {size} = sizefn()
+    const { size } = sizefn()
     const store = useStore();
     const state = reactive({
       sidebar: computed(() => {
@@ -74,10 +65,10 @@ export default {
       avatar: computed(() => {
         return store.getters.avatar
       }),
-      logout:()=>{
+      logout: () => {
         console.log('退出登录')
       },
-      lockFull:()=>{
+      lockFull: () => {
         console.log('锁屏')
       }
     })
@@ -115,6 +106,7 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+
     &:focus {
       outline: none;
     }
@@ -126,6 +118,7 @@ export default {
       font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
+       line-height: 50px;
 
       &.hover_effect {
         cursor: pointer;

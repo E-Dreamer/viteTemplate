@@ -1,12 +1,13 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-08 15:16:11
+ * @LastEditTime: 2022-07-11 13:59:50
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <div>
+    <!-- <el-button @click="change">改变</el-button> -->
     <BasicCrud :crud="crud" :searchForm="searchForm" :tableAttr="tableAttr" :tableColumn="tableColumn">
       <!-- 自定义插槽 -->
       <template #name="{ query }">
@@ -150,6 +151,7 @@ export default {
     //   // 给crud.formRef赋值
     //   crud.formRef = state.getForm
     // })
+
 
     const change = () => {
       // state.searchForm[0].componentProps.disabled = !state.searchForm[0].componentProps.disabled;

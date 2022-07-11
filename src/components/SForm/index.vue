@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-10-26 16:57:14
- * @LastEditTime: 2021-11-03 10:08:08
+ * @LastEditTime: 2022-07-11 11:06:36
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -24,7 +24,7 @@
 </template>
 <script>
 import { computed, nextTick, onBeforeMount, reactive, ref, toRefs } from 'vue'
-import action from '@com/global/index.js'
+import action from '../global/index'
 import { useStore } from 'vuex'
 export default {
   name: 'SForm',

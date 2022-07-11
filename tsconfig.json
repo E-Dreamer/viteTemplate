@@ -7,10 +7,10 @@
     "suppressImplicitAnyIndexErrors":true,
     // 严格模式
     "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["/src/*"]
-    },
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/*": ["/src/*"]
+    // },
     // "types": ["vite/client"]
     // "strictFunctionTypes":false
   },

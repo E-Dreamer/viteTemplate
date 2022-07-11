@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-08 15:24:23
- * @LastEditTime: 2022-07-01 15:32:57
+ * @LastEditTime: 2022-07-11 11:04:11
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -17,7 +17,7 @@ const permission = {
         meta: {
           title: "menu.homepage",
           keepAlive: true,
-          icon: "el-icon-menu",
+          icon: "Menu",
           affix: true,
         },
       },
@@ -28,7 +28,7 @@ const permission = {
         component: () => import('@/views/first/index.vue'),
         meta: {
           title: "第一项",
-          icon: "el-icon-menu",
+          icon: "Menu",
         },
       },
       {
@@ -38,7 +38,7 @@ const permission = {
         component:()=>import('@/views/ceshi/index.vue'),
         meta: {
           title: "测试",
-          icon: "el-icon-menu",
+          icon: "Menu",
         },
       },
       {
@@ -48,7 +48,7 @@ const permission = {
         component:()=>import('@/views/docxexport/index.vue'),
         meta:{
           title:'docx模板导出',
-          icon:"el-icon-menu"
+          icon: "Menu",
         }
       },
       {
@@ -58,7 +58,7 @@ const permission = {
         component:()=>import('@/views/functionPostting/index.vue'),
         meta:{
           title:"函数式的封装",
-          icon:'el-icon-menu'
+          icon: "Menu",
         }
       },
       {
@@ -68,7 +68,7 @@ const permission = {
         component:()=>import('@/views/customTable/index.vue'),
         meta:{
           title:"自定义table组件",
-          icon:'el-icon-menu'
+          icon: "Menu",
         }
       }
     ],

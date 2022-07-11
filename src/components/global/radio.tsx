@@ -26,8 +26,8 @@ export default defineComponent({
     const componentProps = action?.componentProps
     const render = () => {
       return (
-        <el-radio-group v-model={searchInfo[action.key]} {...componentProps}>
-          {action.options.map((item) => {
+        <el-radio-group v-model={searchInfo[action.field]} {...componentProps}>
+          {action.options && action.options.map((item) => {
             return (
               <el-radio
                 key={item.label}

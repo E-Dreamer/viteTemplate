@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2021-09-06 09:53:22
- * @LastEditTime: 2021-09-10 09:55:50
+ * @LastEditTime: 2022-07-11 10:38:16
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -15,7 +15,7 @@ const app = {
       withoutAnimation: false,
     },
     device: "desktop",
-    size: Cookies.get("size") || "medium",
+    size: Cookies.get("size") || "small",
   },
   mutations: {
     // 切换侧边栏信息

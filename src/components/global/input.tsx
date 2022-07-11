@@ -75,7 +75,7 @@ export default defineComponent({
         <el-input-number
           v-model={searchInfo[action.field]}
           clearable
-          min={componentProps?.min || 0}
+          min={componentProps?.maxlength || 0}
           {...componentProps}
         />
       )

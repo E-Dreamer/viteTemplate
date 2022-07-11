@@ -20,7 +20,7 @@ import svgIcon from '@/components/svgIcon/index.vue'
 import 'normalize.css/normalize.css'
 import '@/styles/index.less'
 
-import * as icons from '@element-plus/icons'
+import * as icons from '@element-plus/icons-vue'
 
 import directive from './directive'
 // import "amfe-flexible/index.js";
@@ -66,8 +66,8 @@ export function createApp() {
   app.provide('$MesBox', MesBox)
 
   // icons组件 全部注册
-  for (let key in icons) {
-    app.component(key, icons[key])
+  for (const [key, component] of Object.entries(icons)) {
+    app.component(key, component)
   }
   //自定义指令
   Object.keys(directive).forEach((key) => {
@@ -75,7 +75,7 @@ export function createApp() {
   })
   app.config.globalProperties.$ELEMENT = ElementPlus
   app
-    .use(ElementPlus, { size: Cookies.get('size') || 'medium' , locale: zhCn,})
+    .use(ElementPlus, { size: Cookies.get('size') || 'small' , locale: zhCn,})
     .use(router)
     .use(store)
     .use(i18n)

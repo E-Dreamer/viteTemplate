@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-10 09:00:49
- * @LastEditTime: 2021-09-10 10:35:44
+ * @LastEditTime: 2022-07-11 11:15:59
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -39,9 +39,8 @@ export default {
     const state = reactive({
       sizeOptions: [
         { label: 'size.default', value: 'default' },
-        { label: 'size.medium', value: 'medium' },
         { label: 'size.small', value: 'small' },
-        { label: 'size.mini', value: 'mini' }
+        { label: 'size.large', value: 'large' }
       ],
       handleSetSize: (size) => {
         globalProperties.$ELEMENT.size = size;

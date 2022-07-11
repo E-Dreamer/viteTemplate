@@ -1,12 +1,12 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2021-09-09 09:24:33
- * @LastEditTime: 2022-07-05 13:38:01
+ * @LastEditTime: 2022-07-11 14:03:30
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
-  <section class="app-main">
+  <div class="app-main">
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in" :key="route.path">
         <keep-alive :include="cachedViews">
@@ -17,7 +17,7 @@
           <component :is="Component" :key="route.path"/>
       </keep-alive>-->
     </router-view>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -48,7 +48,7 @@ export default {
   overflow: hidden;
 }
 
-.fixed-header + .app-main {
+.fixed-header+.app-main {
   padding-top: 50px;
 }
 </style>

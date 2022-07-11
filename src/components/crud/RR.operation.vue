@@ -1,41 +1,43 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-08 17:06:34
+ * @LastEditTime: 2022-07-11 14:15:16
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
 <template>
   <div>
     <slot name="left" />
-    <el-button v-if="crud.optShow.edit" v-auth="auth.edit" :loading="crud.status.cu === 2" size="small"
-      :disabled="disabledEdit" :type="btnType || 'primary'" icon="el-icon-edit" @click="crud.toEdit(data)">
-      <template v-if="btnType === 'text'">编辑</template>
-    </el-button>
+    <!--  -->
+    <span v-auth="auth.edit" class="btn">
+      <el-button v-if="crud.optShow.edit" :loading="crud.status.cu === 2" size="small" :disabled="disabledEdit"
+        type="primary"  icon="edit" @click="crud.toEdit(data)">
+      </el-button>
+    </span>
     <slot />
-    <el-popover v-model:visible="pop" v-auth="auth.del" placement="top" width="180" trigger="click"
-      @show="onPopoverShow" @hide="onPopoverHide">
-      <template #reference>
-        <el-button v-if="crud.optShow.del"
-          :loading="crud.dataStatus[crud.getDataId(data)] && crud.dataStatus[crud.getDataId(data)].delete === 2"
-          :class="[btnType && 'danger-text-btn']" :disabled="disabledDle" :type="btnType || 'danger'"
-          icon="el-icon-delete" size="small" @click="toDelete">
-        </el-button>
-      </template>
-      <p>{{ msg }}</p>
-      <div style="text-align: right; margin: 0">
-        <el-button size="small" type="text" @click="doCancel">取消</el-button>
 
-        <el-button type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
-      </div>
-    </el-popover>
+    <span v-auth="auth.del" class="btn">
+      <el-popover v-model:visible="pop" placement="top" width="180" trigger="click" @show="onPopoverShow"
+        @hide="onPopoverHide">
+        <template #reference>
+          <el-button v-if="crud.optShow.del" icon="delete" size="small" @click="toDelete" :loading="loading"
+            class="danger-text-btn" :disabled="disabledDle" type="danger"></el-button>
+        </template>
+        <p>{{ msg }}</p>
+        <div style="text-align: right; margin: 0">
+          <el-button size="small" type="text" @click="doCancel">取消</el-button>
+          <el-button type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
+        </div>
+      </el-popover>
+    </span>
+
+
     <slot name="right" />
   </div>
 </template>
 
 <script lang="ts">
-import { MessageType } from 'element-plus';
-import { toRefs, reactive, PropType } from 'vue'
+import { toRefs, reactive, PropType, computed } from 'vue'
 import { CrudProps, AuthProps } from './types/crudProps';
 export default {
   props: {
@@ -62,11 +64,6 @@ export default {
       type: Boolean,
       default: false
     },
-    //按钮类型
-    btnType: {
-      type: String as PropType<MessageType>,
-      default: ''
-    },
     // 弹出消息内容
     msg: {
       type: String,
@@ -76,7 +73,11 @@ export default {
   setup(props: { crud: CrudProps, data: object }) {
     const crud = props.crud
     const state = reactive({
-      pop: false as boolean
+      pop: false
+    })
+    const loading = computed(() => {
+      const key = crud.getDataId(props.data)
+      return crud.dataStatus[key] && crud.dataStatus[key]?.delete === 2
     })
     const handleDocumentClick = () => {
       state.pop = false;
@@ -93,22 +94,25 @@ export default {
 
     const doCancel = () => {
       state.pop = false;
-      // crud.cancelDelete(props.data)
+      crud.cancelDelete(props.data)
     }
 
     const toDelete = () => {
       crud.beforeClickDelete(props.data)
       state.pop = true;
     }
-    // crud.HOOK.afterDelete = (crud, data) => {
-
-    // }
+    crud.HOOK.afterDelete = (crud, data) => {
+      if (data === props.data) {
+        state.pop = false
+      }
+    }
     return {
       ...toRefs(state),
       onPopoverShow,
       onPopoverHide,
       doCancel,
-      toDelete
+      toDelete,
+      loading
     }
   }
 }
@@ -118,5 +122,9 @@ export default {
   padding: 0 10px !important;
   min-height: 25px;
   box-sizing: border-box;
+}
+
+.btn {
+  margin-right: 10px;
 }
 </style>

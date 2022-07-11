@@ -1,10 +1,10 @@
 import { ComputedRef, readonly, Ref } from 'vue'
 import { ElForm, ElTable,  } from 'element-plus'
-type MessageType = 'success' | 'info' | 'warning' | 'error'
+export type MessageType = 'success' | 'info' | 'warning' | 'error'
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-07 14:54:48
- * @LastEditTime: 2022-07-08 17:09:48
+ * @LastEditTime: 2022-07-11 14:11:21
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -163,7 +163,7 @@ export interface CrudProps {
   cancelCU: () => void
   toDelete: (data: any[]) => void
   doDelete: (data: any[] | object) => void
-  cancelDelete: (data: any[]) => void
+  cancelDelete: (data: any[] | object) => void
   beforeClickDelete: (data: object) => void
   doExport: () => void
   submitCU: (flag: boolean) => void
