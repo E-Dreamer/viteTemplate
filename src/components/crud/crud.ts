@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-12 10:42:11
+ * @LastEditTime: 2022-07-13 14:56:59
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -186,7 +186,7 @@ function CRUD(tableProps: CrudProps) {
   // tableProps = mergeOptions(defaultOptions, tableProps)
   tableProps = Object.assign(defaultOptions, tableProps)
 
-  tableProps.defaultQuery = JSON.parse(JSON.stringify(tableProps.query))
+  tableProps.defaultQuery = deepClone(tableProps.query)
 
   const state = reactive(tableProps)
   state.defaultForm = deepClone(state.form)

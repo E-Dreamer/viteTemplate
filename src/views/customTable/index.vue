@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-01 15:34:04
- * @LastEditTime: 2022-07-11 15:53:48
+ * @LastEditTime: 2022-07-12 11:32:19
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -136,16 +136,23 @@ export default {
       crudMethod: { add, edit, del },
       form: state.form,
       query: { className: '啦啦啦' },
-      formRef: () => { return state.getForm }
-
+      formRef: () => { return state.getForm },
+      HOOK: {
+        beforeToAdd(crud, form) {
+          console.log('crud, form: ', crud, form);
+          console.log('return toadd')
+          return true;
+        }
+      }
     })
     // HOOK 可在外配置 也可以直接写入useCrud中
     if (crud.HOOK) {
-      crud.HOOK.beforeToAdd = (crud, form) => {
-        console.log('return toadd')
-        return true;
-      }
+      // crud.HOOK.beforeToAdd=(crud, form)=> {
+      //   console.log('return toadd')
+      //   return true;
+      // }
       crud.HOOK.beforeRefresh = (crud, form) => {
+        console.log('crud, form: ', crud, form);
         return true
       }
     }
