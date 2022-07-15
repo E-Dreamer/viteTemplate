@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-15 14:35:06
+ * @LastEditTime: 2022-07-15 14:50:20
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -77,7 +77,6 @@ export default {
     })
     const loading = computed(() => {
       const key = crud.getDataId(props.data)
-      console.log(crud.dataStatus[key]);
       return crud.dataStatus[key] &&  crud.dataStatus[key].delete === 2
     })
     const handleDocumentClick = () => {
