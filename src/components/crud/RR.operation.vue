@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-06 13:49:41
- * @LastEditTime: 2022-07-11 14:15:16
+ * @LastEditTime: 2022-07-15 14:35:06
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -11,7 +11,7 @@
     <!--  -->
     <span v-auth="auth.edit" class="btn">
       <el-button v-if="crud.optShow.edit" :loading="crud.status.cu === 2" size="small" :disabled="disabledEdit"
-        type="primary"  icon="edit" @click="crud.toEdit(data)">
+        type="primary" icon="edit" @click="crud.toEdit(data)">
       </el-button>
     </span>
     <slot />
@@ -38,11 +38,11 @@
 
 <script lang="ts">
 import { toRefs, reactive, PropType, computed } from 'vue'
-import { CrudProps, AuthProps } from './types/crudProps';
+import { useCrudProps, AuthProps } from './types/types';
 export default {
   props: {
     crud: {
-      type: Object as PropType<CrudProps>,
+      type: Object as PropType<useCrudProps>,
       default: () => { return {} }
     },
     auth: {
@@ -70,14 +70,15 @@ export default {
       default: '确定删除本条数据吗？'
     }
   },
-  setup(props: { crud: CrudProps, data: object }) {
+  setup(props: { crud: useCrudProps, data: object }) {
     const crud = props.crud
     const state = reactive({
       pop: false
     })
     const loading = computed(() => {
       const key = crud.getDataId(props.data)
-      return crud.dataStatus[key] && crud.dataStatus[key]?.delete === 2
+      console.log(crud.dataStatus[key]);
+      return crud.dataStatus[key] &&  crud.dataStatus[key].delete === 2
     })
     const handleDocumentClick = () => {
       state.pop = false;

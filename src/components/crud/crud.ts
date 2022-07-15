@@ -1,18 +1,11 @@
+
 /*
  * @Author: E-Dreamer
- * @Date: 2022-07-01 15:49:44
- * @LastEditTime: 2022-07-13 14:56:59
+ * @Date: 2022-07-08 17:00:37
+ * @LastEditTime: 2022-07-15 14:28:07
  * @LastEditors: E-Dreamer
- * @Description:
+ * @Description: 
  */
-// !. 表示类型推断排除null、undefined
-import { reactive, isRef, onMounted, computed } from 'vue'
-import { ElMessage } from 'element-plus'
-import {
-  CrudProps,
-  NOTIFICATION_TYPE_PROPS,
-  HookProps,
-} from './types/crudProps'
 // function mergeOptions(src: object, opts: object) {
 //   const optsRet = {
 //     ...src,
@@ -24,7 +17,12 @@ import {
 //   }
 //   return optsRet
 // }
-//是否是函数
+
+import { CrudProps, NOTIFICATION_TYPE_PROPS, useCrudProps } from "./types/types"
+import { ElMessage } from 'element-plus'
+import { reactive, computed, onMounted } from 'vue';
+
+//深拷贝
 function deepClone(source: any): object {
   if (typeof source !== 'object' || source == null) {
     return source
@@ -41,14 +39,12 @@ function deepClone(source: any): object {
   }
   return target
 }
+//判断是不是函数
 const isFn = (result: object) => {
   return Object.prototype.toString.call(result) === '[object Function]'
 }
+//! 假设的请求
 function initData(url: string, params: object) {
-  // return request({
-  //   url: url + '?' + qs.stringify(params, { indices: false }),
-  //   method: 'get'
-  // })
   return new Promise((resolve, reject) => {
     let data = [{ id: 1, name: '张三', address: '北京' }]
     for (let i = 0; i < 10; i++) {
@@ -63,7 +59,9 @@ function initData(url: string, params: object) {
     reject('报错了')
   })
 }
-const HOOK: HookProps = {
+
+//钩子函数
+const HOOK = {
   /** 刷新 - 之前 */
   beforeRefresh: undefined,
   /** 刷新 - 之后 */
@@ -109,6 +107,7 @@ const HOOK: HookProps = {
   afterAddError: undefined,
   afterEditError: undefined,
 }
+
 //信息
 const msg = {
   submit: '提交成功',
@@ -130,112 +129,136 @@ const NOTIFICATION_TYPE: NOTIFICATION_TYPE_PROPS = {
   ERROR: 'error',
 }
 
-/**
- * @description: CRUD配置
- * @param {*} tableProps
- * @return {*}crud instance.
- */
-function CRUD(tableProps: CrudProps) {
-  //默认参数
-  const defaultOptions = {
-    idField: 'id',
-    title: '',
-    url: '',
-    data: [],
-    selections: [],
-    query: {},
-    params: {},
-    form: {},
-    defaultForm: {},
-    sort: ['id,desc'],
-    page: {
-      // 页码
-      page: 0,
-      // 每页数据条数
-      size: 10,
-      // 总数据条数
-      total: 0,
-    },
-    // 整体loading
-    loading: false,
-    // 导出的 Loading
-    downloadLoading: false,
-    // 删除的 Loading
-    delAllLoading: false,
-    // CRUD Method
-    crudMethod: {
-      add: () => {},
-      del: () => {},
-      edit: () => {},
-      get: () => {},
-    },
-    optShow: {
-      add: true,
-      edit: true,
-      del: true,
-      download: true,
-      reset: true,
-    },
-    HOOK,
-    tableRef: undefined,
-    formRef: undefined,
-    searchToggle: true,
-    NOTIFICATION_TYPE,
-    dataStatus: {},
-  }
-  // tableProps = mergeOptions(defaultOptions, tableProps)
-  tableProps = Object.assign(defaultOptions, tableProps)
-
-  tableProps.defaultQuery = deepClone(tableProps.query)
-
-  const state = reactive(tableProps)
-  state.defaultForm = deepClone(state.form)
-  state.status = {
+const defaultObj: useCrudProps = {
+  idField: 'id',
+  title: '',
+  url: '',
+  selections: [],
+  query: {},
+  params: {},
+  form: {},
+  data: [],
+  status: {
     add: STATUS.NORMAL,
     edit: STATUS.NORMAL,
-    // 添加或编辑状态
-    cu: computed(() => {
+    cu: STATUS.NORMAL,
+    title: '',
+    dialog: false,
+  },
+  defaultForm: {},
+  sort: ['id,desc'],
+  searchToggle: true,
+  HOOK,
+  NOTIFICATION_TYPE,
+  defaultQuery: {},
+  page: {
+    page: 0,
+    size: 10,
+    total: 0,
+  },
+  crudMethod: {
+    add: () => { },
+    del: () => { },
+    edit: () => { },
+    get: () => { },
+  },
+  optShow: {
+    add: true,
+    edit: true,
+    del: true,
+    download: true,
+    reset: true,
+  },
+  loading: false,
+  downloadLoading: false,
+  delAllLoading: false,
+  dataStatus: {},
+  tableRef: null,
+  formRef: () => null,
+  notify: () => { },
+  getQueryParams: () => {
+    return {}
+  },
+  refresh: () => { },
+  resetQuery: () => { },
+  toQuery: () => { },
+  sizeChangeHandler: () => { },
+  pageChangeHandler: () => { },
+  toggleChange: () => { },
+  selectionChange: () => { },
+  toAdd: () => { },
+  resetForm: () => { },
+  toEdit: () => { },
+  cancelCU: () => { },
+  submitCU: () => { },
+  doAdd: () => { },
+  doEdit: () => { },
+  toDelete: () => { },
+  doDelete: () => { },
+  resetDataStatus: () => { },
+  cancelDelete: () => { },
+  beforeClickDelete: () => { },
+  doExport: () => { },
+  getDataStatus: () => {
+    return {
+      edit: 0,
+      delete: 0,
+    }
+  },
+  getDataId: () => {
+    return ''
+  },
+  toggleRowSelection: () => { },
+  selectChange: () => { },
+  selectAllChange: () => { },
+  dleChangePage: () => { },
+}
+
+
+export function useCrud(params: CrudProps): useCrudProps {
+  let crud: useCrudProps = reactive(Object.assign(defaultObj, params))
+  crud.defaultQuery = deepClone(crud.query)
+  crud.defaultForm = deepClone(crud.form)
+  crud.status = {
+    add: STATUS.NORMAL,
+    edit: STATUS.NORMAL,
+    cu: computed((): number => {
       if (
-        state.status!.add === STATUS.NORMAL &&
-        state.status!.edit === STATUS.NORMAL
+        crud.status.add === STATUS.NORMAL &&
+        crud.status.edit === STATUS.NORMAL
       ) {
         return STATUS.NORMAL
       } else if (
-        state.status!.add === STATUS.PREPARED ||
-        state.status!.edit === STATUS.PREPARED
+        crud.status.add === STATUS.PREPARED ||
+        crud.status.edit === STATUS.PREPARED
       ) {
         return STATUS.PREPARED
       } else if (
-        state.status!.add === STATUS.PROCESSING ||
-        state.status!.edit === STATUS.PROCESSING
+        crud.status.add === STATUS.PROCESSING ||
+        crud.status.edit === STATUS.PROCESSING
       ) {
         return STATUS.PROCESSING
       }
       throw new Error("wrong crud's cu status")
     }),
-    // 标题
-    title: computed(() => {
-      return state.status!.add > STATUS.NORMAL
-        ? `新增${state.title}`
-        : state.status!.edit > STATUS.NORMAL
-        ? `编辑${state.title}`
-        : state.title
+    title: computed((): string => {
+      return crud.status.add > STATUS.NORMAL
+        ? `新增${crud.title}`
+        : crud.status.edit > STATUS.NORMAL
+          ? `编辑${crud.title}`
+          : crud.title
     }),
     dialog: computed({
       get: () => {
-        return state.status!.cu > 0
+        return crud.status.cu > 0
       },
       set: (val) => {
-        // console.log(val)
+        //
         return true
       },
     }),
   }
-  return state
-}
 
-export function useCrud(tableProps: CrudProps): CrudProps {
-  let crud = CRUD(tableProps)
   /**
    * @description: 获取到hook的函数
    * @param {string} name hook对象中的名称
@@ -248,34 +271,39 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     first: any = crud,
     second: any = crud.form
   ) => {
-    if (isFn(crud.HOOK?.[name])) {
-      return crud.HOOK?.[name](first, second)
+    if (isFn(crud.HOOK[name])) {
+      return crud.HOOK[name](first, second)
     }
     return true
   }
 
-  //通知
-  crud.notify = (message, type = 'info') => {
-    ElMessage({
-      message,
-      type,
-      duration: 2500,
-    })
-  }
   /**
    * 通用的提示
    */
   const submitSuccessNotify = () => {
-    crud.notify?.(msg.submit, crud.NOTIFICATION_TYPE!.SUCCESS)
+    crud.notify(msg.submit, crud.NOTIFICATION_TYPE!.SUCCESS)
   }
   const addSuccessNotify = () => {
-    crud.notify?.(msg.add, crud.NOTIFICATION_TYPE!.SUCCESS)
+    crud.notify(msg.add, crud.NOTIFICATION_TYPE!.SUCCESS)
   }
   const editSuccessNotify = () => {
-    crud.notify?.(msg.edit, crud.NOTIFICATION_TYPE!.SUCCESS)
+    crud.notify(msg.edit, crud.NOTIFICATION_TYPE!.SUCCESS)
   }
   const delSuccessNotify = () => {
-    crud.notify?.(msg.del, crud.NOTIFICATION_TYPE!.SUCCESS)
+    crud.notify(msg.del, crud.NOTIFICATION_TYPE!.SUCCESS)
+  }
+  /**
+   * @description: 通知
+   * @param {*} message 內容
+   * @param {*} type element messageType "success" | "info" | "warning" | "error"
+   * @return {*}
+   */
+  crud.notify = (message, type = crud.NOTIFICATION_TYPE.INFO) => {
+    return ElMessage({
+      message,
+      type,
+      duration: 2500,
+    })
   }
 
   /**
@@ -294,8 +322,8 @@ export function useCrud(tableProps: CrudProps): CrudProps {
           crud.params[item] = undefined
       })
     return {
-      page: crud.page!.page - 1,
-      size: crud.page!.size,
+      page: crud.page.page - 1,
+      size: crud.page.size,
       sort: crud.sort,
       ...crud.query,
       ...crud.params,
@@ -310,16 +338,14 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     if (!findHook('beforeRefresh')) {
       return
     }
-    console.log(crud.getQueryParams?.())
 
     return new Promise((resolve, reject) => {
       crud.loading = true
-      const key = crud.getQueryParams?.()
-      initData(crud.url, key as object)
+      initData(crud.url, crud.getQueryParams())
         .then((data: any) => {
-          crud.page!.total = data.totalElements
+          crud.page.total = data.totalElements
           crud.data = data
-          crud.resetDataStatus?.()
+          crud.resetDataStatus()
           crud.loading = false
           findHook('afterRefresh')
           resolve(data)
@@ -330,13 +356,14 @@ export function useCrud(tableProps: CrudProps): CrudProps {
         })
     })
   }
+
   /**
    * @description: 重置查询参数
    * @param {*} flag 重置后进行查询操作
    * @return {*}
    */
   crud.resetQuery = (flag = true) => {
-    const defaultQuery = JSON.parse(JSON.stringify(crud.defaultQuery))
+    const defaultQuery = deepClone(crud.defaultQuery)
     const query = crud.query
     Object.keys(query as object).forEach((key) => {
       query && (query[key] = defaultQuery[key])
@@ -344,28 +371,28 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     // 重置参数
     crud.params = {}
     if (flag) {
-      crud.toQuery?.()
+      crud.toQuery()
     }
   }
+
   /**
    * @description: 查询
    * @return {*}
    */
   crud.toQuery = () => {
-    crud.page!.page = 1
-    crud.refresh?.()
+    crud.page.page = 1
+    crud.refresh()
   }
 
-  //
   /**
    * @description: 每页条数改变
    * @param {*} e 条数值
    * @return {*}
    */
   crud.sizeChangeHandler = (e) => {
-    crud.page!.size = e
-    crud.page!.page = 1
-    crud.refresh?.()
+    crud.page.size = e
+    crud.page.page = 1
+    crud.refresh()
   }
 
   /**
@@ -374,8 +401,8 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @return {*}
    */
   crud.pageChangeHandler = (e) => {
-    crud.page!.page = e
-    crud.refresh?.()
+    crud.page.page = e
+    crud.refresh()
   }
 
   /**
@@ -399,11 +426,11 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @return {*} 传递form的ref
    */
   crud.toAdd = () => {
-    crud.resetForm?.()
+    crud.resetForm()
     if (!findHook('beforeToAdd') && findHook('beforeToCU')) {
       return
     }
-    crud.status!.add = STATUS.PREPARED
+    crud.status.add = STATUS.PREPARED
     findHook('afterToAdd')
     findHook('afterToCU')
   }
@@ -430,11 +457,12 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @return {*}
    */
   crud.toEdit = (data) => {
-    crud.resetForm?.(JSON.parse(JSON.stringify(data)))
+    const clone = deepClone(data)
+    crud.resetForm(clone)
     if (!(findHook('beforeToAdd') && findHook('beforeToCU'))) {
       return
     }
-    crud.status!.edit = STATUS.PREPARED
+    crud.status.edit = STATUS.PREPARED
     findHook('afterToEdit')
     findHook('afterToCU')
   }
@@ -444,22 +472,22 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @return {*}
    */
   crud.cancelCU = () => {
-    const addStatus = crud.status?.add
-    const editStatus = crud.status?.edit
+    const addStatus = crud.status.add
+    const editStatus = crud.status.edit
     if (addStatus === STATUS.PREPARED) {
       if (!findHook('beforeAddCancel')) {
         return
       }
-      crud.status!.add = STATUS.NORMAL
+      crud.status.add = STATUS.NORMAL
     }
     if (editStatus === STATUS.PREPARED) {
       if (!findHook('beforeEditCancel')) {
         return
       }
-      crud.status!.edit = STATUS.NORMAL
-      crud.getDataStatus!(crud.getDataId!(crud.form)).edit = STATUS.NORMAL
+      crud.status.edit = STATUS.NORMAL
+      crud.getDataStatus(crud.getDataId(crud.form)).edit = STATUS.NORMAL
     }
-    crud.resetForm?.()
+    crud.resetForm()
     if (addStatus === STATUS.PREPARED) {
       findHook('afterAddCancel')
     }
@@ -475,7 +503,7 @@ export function useCrud(tableProps: CrudProps): CrudProps {
    * @param {*} flag 控制是否关闭弹窗
    * @return {*}
    */
-  crud.submitCU = (flag) => {
+  crud.submitCU = (flag = true) => {
     if (!findHook('beforeValidateCU')) {
       return
     }
@@ -491,104 +519,23 @@ export function useCrud(tableProps: CrudProps): CrudProps {
       if (!findHook('afterValidateCU')) {
         return
       }
-      if (crud.status!.add === STATUS.PREPARED) {
-        flag ? crud.doAdd?.() : crud.doAddNoClose?.()
-      } else if (crud.status!.edit === STATUS.PREPARED) {
-        crud.doEdit?.()
+      if (crud.status.add === STATUS.PREPARED) {
+        crud.doAdd(flag)
+      } else if (crud.status.edit === STATUS.PREPARED) {
+        crud.doEdit()
       }
     })
   }
 
-  /**
-   * @description: 执行添加
-   * @return {*}
-   */
-  crud.doAdd = () => {
-    if (!findHook('beforeSubmit')) {
-      return
-    }
-    crud.status!.add = STATUS.PROCESSING
-    crud.crudMethod
-      .add(crud.form)
-      .then(() => {
-        crud.status!.add = STATUS.NORMAL
-        crud.resetForm?.()
-        addSuccessNotify()
-        findHook('afterSubmit')
-        crud.toQuery?.()
-      })
-      .catch(() => {
-        crud.status!.add = STATUS.PREPARED
-        findHook('afterAddError')
-      })
-  }
-
-  /**
-   * @description:
-   * @return {*}
-   */
-  crud.doAddNoClose = () => {
-    if (!findHook('beforeSubmit')) {
-      return
-    }
-    crud.status!.add = STATUS.PROCESSING
-    crud.crudMethod
-      .add(crud.form)
-      .then(() => {
-        crud.status!.add = STATUS.NORMAL
-        addSuccessNotify()
-        findHook('afterSubmit')
-        crud.toQuery?.()
-      })
-      .catch(() => {
-        crud.status!.add = STATUS.PREPARED
-        findHook('afterAddError')
-      })
-  }
-
-  /**
-   * @description: 执行编辑
-   * @return {*}
-   */
-  crud.doEdit = () => {
-    if (!findHook('beforeSubmit')) {
-      return
-    }
-    crud.status!.edit = STATUS.PROCESSING
-    crud.crudMethod
-      .edit(crud.form)
-      .then((d: any) => {
-        crud.status!.edit = STATUS.NORMAL
-        crud.getDataStatus!(crud.getDataId!(crud.form)).edit = STATUS.NORMAL
-        editSuccessNotify()
-        findHook('afterSubmit')
-        crud.resetForm?.()
-        crud.refresh?.()
-      })
-      .catch((e: any) => {
-        crud.status!.edit = STATUS.PREPARED
-        findHook('afterEditError')
-      })
-  }
   /**
    * @description: 启动删除
    * @param {*} data 需要删除的项
    * @return {*}
    */
   crud.toDelete = (data) => {
-    crud.getDataStatus!(crud.getDataId!(data)).delete = STATUS.PREPARED
+    crud.getDataStatus(crud.getDataId(data)).delete = STATUS.PREPARED
   }
 
-  /**
-   * @description: 预防删除第二页最后一条数据时，或者多选删除第二页的数据时，页码错误导致请求无数据
-   * @param {*} size 页码
-   * @return {*}
-   */
-  crud.dleChangePage = (size) => {
-    if (crud.data?.length === size && crud.page?.page !== 1) {
-      crud.page!.page -= 1
-    }
-  }
   /**
    * @description:
    * @param {*} data 需要删除的项
@@ -614,11 +561,11 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     if (data instanceof Array) {
       delAll = true
       data.forEach((val) => {
-        ids.push(crud.getDataId?.(val))
+        ids.push(crud.getDataId(val))
       })
     } else {
-      ids.push(crud.getDataId?.(data))
-      dataStatus = crud.getDataStatus!(crud.getDataId!(data))
+      ids.push(crud.getDataId(data))
+      dataStatus = crud.getDataStatus(crud.getDataId(data))
     }
     if (!findHook('beforeDelete', data)) {
       return
@@ -626,22 +573,109 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     if (!delAll) {
       dataStatus.delete = STATUS.PROCESSING
     }
-    return crud.crudMethod
-      .del(ids)
-      .then(() => {
-        if (delAll) {
-          crud.delAllLoading = false
-        } else dataStatus.delete = STATUS.PREPARED
-        crud.dleChangePage?.(1)
-        delSuccessNotify()
-        findHook('afterDelete', data)
-        crud.refresh?.()
-      })
+    return crud.crudMethod.del(ids)?.then(() => {
+      if (delAll) {
+        crud.delAllLoading = false
+      } else dataStatus.delete = STATUS.PREPARED
+      crud.dleChangePage(1)
+      delSuccessNotify()
+      findHook('afterDelete', data)
+      crud.refresh()
+    })
       .catch(() => {
         if (delAll) {
           crud.delAllLoading = false
         } else dataStatus.delete = STATUS.PREPARED
       })
+  }
+
+  /**
+   * @description: 取消删除
+   * @param {*} data 需要删除的项
+   * @return {*}
+   */
+  crud.cancelDelete = (data) => {
+    if (!findHook('beforeDeleteCancel')) {
+      return
+    }
+    crud.getDataStatus(crud.getDataId(data)).delete = STATUS.NORMAL
+    findHook('afterDeleteCancel', data)
+  }
+
+  /**
+   * @description: 点击删除之前的操作
+   * @param {*} data
+   * @return {*}
+   */
+  crud.beforeClickDelete = (data) => {
+    findHook('beforeClickDelete', data)
+  }
+
+  /**
+  * @description: 导出方法
+  * @return {*}
+  */
+  crud.doExport = () => { }
+
+  /**
+   * @description: 
+   * @return {*}
+   */
+  /**
+   * @description: 执行添加
+   * @param {*} flag 是否重置表单
+   * @return {*}
+   */
+  crud.doAdd = (flag = true) => {
+    if (!findHook('beforeSubmit')) {
+      return
+    }
+    crud.status.add = STATUS.PROCESSING
+    crud.crudMethod.add(crud.form)?.then(() => {
+      crud.status.add = STATUS.NORMAL
+      if (flag) {
+        crud.resetForm()
+      }
+      addSuccessNotify()
+      findHook('afterSubmit')
+      crud.toQuery()
+    })
+      .catch(() => {
+        crud.status.add = STATUS.PREPARED
+        findHook('afterAddError')
+      })
+  }
+
+  /**
+   * @description: 执行编辑
+   * @return {*}
+   */
+  crud.doEdit = () => {
+    if (!findHook('beforeSubmit')) {
+      return
+    }
+    crud.status.edit = STATUS.PROCESSING
+    crud.crudMethod.edit(crud.form)?.then(() => {
+      crud.status.edit = STATUS.NORMAL
+      crud.getDataStatus(crud.getDataId(crud.form)).edit = STATUS.NORMAL
+      editSuccessNotify()
+      findHook('afterSubmit')
+      crud.resetForm()
+      crud.refresh()
+    })
+      .catch(() => {
+        crud.status.edit = STATUS.PREPARED
+        findHook('afterEditError')
+      })
+  }
+
+  /**
+   * @description: 获取数据状态
+   * @param {*} id 列表 id
+   * @return {*}
+   */
+  crud.getDataStatus = (id) => {
+    return crud.dataStatus[id]
   }
 
   /**
@@ -653,7 +687,7 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     function resetStatus(datas: any[]) {
       if (datas?.length) {
         datas.forEach((e) => {
-          dataStatus[crud.getDataId!(e)] = {
+          dataStatus[crud.getDataId(e)] = {
             delete: 0,
             edit: 0,
           }
@@ -663,8 +697,61 @@ export function useCrud(tableProps: CrudProps): CrudProps {
         })
       }
     }
-    crud.data && resetStatus(crud.data)
+    resetStatus(crud.data)
     crud.dataStatus = dataStatus
+  }
+
+  /**
+  * @description: 获取数据id
+  * @param {*} data crud.data
+  * @return {*}
+  */
+  crud.getDataId = (data) => {
+    return crud.idField && data[crud.idField]
+  }
+
+  /**
+   * @description: 切换选中状态
+   * @param {*} selection
+   * @param {*} data
+   * @return {*}
+   */
+  crud.toggleRowSelection = (selection, data) => {
+    if (data.children) {
+      data.children.forEach((val: { children: any[];[key: string]: any }) => {
+        crud.tableRef?.toggleRowSelection(val, false)
+        if (val.children) {
+          crud.toggleRowSelection(selection, val)
+        }
+      })
+    }
+  }
+
+  /**
+  * @description: 用于树形表格多选, 选中所有
+  * @param {*} selection
+  * @param {*} row
+  * @return {*}
+  */
+  crud.selectChange = (selection, row) => {
+    // 如果selection中存在row代表是选中，否则是取消选中
+    if (
+      selection.find((val) => {
+        return crud.getDataId(val) === crud.getDataId(row)
+      })
+    ) {
+      if (row.children) {
+        row.children.forEach((val) => {
+          crud.tableRef?.toggleRowSelection(val, true)
+          selection.push(val)
+          if (val.children) {
+            crud.selectChange(selection, val)
+          }
+        })
+      }
+    } else {
+      crud.toggleRowSelection(selection, row)
+    }
   }
 
   /**
@@ -683,97 +770,20 @@ export function useCrud(tableProps: CrudProps): CrudProps {
     }
   }
 
+
   /**
-   * @description: 用于树形表格多选, 选中所有
-   * @param {*} selection
-   * @param {*} row
+   * @description: 预防删除第二页最后一条数据时，或者多选删除第二页的数据时，页码错误导致请求无数据
+   * @param {*} size 页码
    * @return {*}
    */
-  crud.selectChange = (selection, row) => {
-    // 如果selection中存在row代表是选中，否则是取消选中
-    if (
-      selection.find((val) => {
-        return crud.getDataId?.(val) === crud.getDataId?.(row)
-      })
-    ) {
-      if (row.children) {
-        row.children.forEach((val) => {
-          crud.tableRef?.toggleRowSelection(val, true)
-          selection.push(val)
-          if (val.children) {
-            crud.selectChange?.(selection, val)
-          }
-        })
-      }
-    } else {
-      crud.toggleRowSelection?.(selection, row)
+  crud.dleChangePage = (size) => {
+    if (crud.data.length === size && crud.page.page !== 1) {
+      crud.page.page -= 1
     }
   }
-
-  /**
-   * @description: 切换选中状态
-   * @param {*} selection
-   * @param {*} data
-   * @return {*}
-   */
-  crud.toggleRowSelection = (selection, data) => {
-    if (data.children) {
-      data.children.forEach((val: { children: any[]; [key: string]: any }) => {
-        crud.tableRef?.toggleRowSelection(val, false)
-        if (val.children) {
-          crud.toggleRowSelection?.(selection, val)
-        }
-      })
-    }
-  }
-
-  /**
-   * @description: 获取数据id
-   * @param {*} data crud.data
-   * @return {*}
-   */
-  crud.getDataId = (data) => {
-    return crud.idField && data[crud.idField]
-  }
-
-  /**
-   * @description: 获取数据状态
-   * @param {*} id 列表 id
-   * @return {*}
-   */
-  crud.getDataStatus = (id) => {
-    return crud.dataStatus?.[id]
-  }
-  /**
-   * @description: 取消删除
-   * @param {*} data 需要删除的项
-   * @return {*}
-   */
-  crud.cancelDelete = (data) => {
-    if (!findHook('beforeDeleteCancel')) {
-      return
-    }
-    crud.getDataStatus!(crud.getDataId!(data)).delete = STATUS.NORMAL
-    findHook('afterDeleteCancel', data)
-  }
-
-  /**
-   * @description: 点击删除之前的操作
-   * @param {*} data
-   * @return {*}
-   */
-  crud.beforeClickDelete = (data) => {
-    findHook('beforeClickDelete', data)
-  }
-
-  /**
-   * @description: 导出方法
-   * @return {*}
-   */
-  crud.doExport = () => {}
 
   onMounted(() => {
-    crud.toQuery?.()
+    crud.refresh()
   })
-  return crud
+  return crud;
 }

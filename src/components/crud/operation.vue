@@ -53,7 +53,7 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, unref, nextTick, PropType } from 'vue'
-import { CrudProps, AuthProps, ELTableInstance } from './types/crudProps';
+import { useCrudProps, AuthProps, ELTableInstance } from './types/types';
 
 import { ElMessageBox } from 'element-plus'
 
@@ -67,7 +67,7 @@ interface State {
 export default {
   props: {
     crud: {
-      type: Object as PropType<CrudProps>,
+      type: Object as PropType<useCrudProps>,
       default: () => { return {} }
     },
     auth: {
@@ -75,7 +75,7 @@ export default {
       required: true
     }
   },
-  setup(props: { crud: CrudProps; auth: AuthProps }) {
+  setup(props: { crud: useCrudProps; auth: AuthProps }) {
     const crud = props.crud;
     const state = reactive<State>({
       allColumnsSelected: true,

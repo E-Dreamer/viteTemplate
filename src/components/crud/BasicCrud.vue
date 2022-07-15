@@ -1,7 +1,7 @@
 <!--
  * @Author: E-Dreamer
  * @Date: 2022-07-05 09:56:49
- * @LastEditTime: 2022-07-11 13:53:46
+ * @LastEditTime: 2022-07-15 14:35:59
  * @LastEditors: E-Dreamer
  * @Description: 
 -->
@@ -65,7 +65,7 @@ import {
   computed,
 } from 'vue'
 import action from '@/components/global/index'
-import { CrudProps, ELTableInstance } from './types/crudProps'
+import { useCrudProps, ELTableInstance } from './types/types'
 import { Action } from '../global/types/action'
 import { tableAttr, tableColumn } from './types/tableAttr'
 interface searchForm extends Action {
@@ -75,7 +75,7 @@ export default {
   components: { ...action },
   props: {
     crud: {
-      type: Object as PropType<CrudProps>,
+      type: Object as PropType<useCrudProps>,
       default: () => {
         return {}
       },
@@ -102,7 +102,7 @@ export default {
       require: true,
     },
   },
-  setup(props) {
+  setup(props: any) {
     const state = reactive({
       table: null as ELTableInstance | null | undefined,
     })
